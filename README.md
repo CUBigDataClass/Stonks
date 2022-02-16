@@ -1,2 +1,2 @@
 # Stonks
-Hold the line!
+Buy the dip!
