@@ -1,4 +1,7 @@
 # API keys
 keys.py
 
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
+
 __pycache__/
