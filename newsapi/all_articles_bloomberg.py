@@ -43,9 +43,9 @@ class NewsArticles(NewsApiClient):
 
         # /v2/ All articles published AN HOUR AGO about some companies in english from Bloomberg (pg1)
         all_articles = self.newsapi.get_everything(
-            q=str(q),        
-            domains=str(self.domains),
-            language=str(self.languages[0]),
+            q=q,        
+            domains=self.domains,
+            language=self.languages[0],
             from_param=from_time,
             page=self.page,
             page_size=self.page_size)
@@ -54,6 +54,7 @@ class NewsArticles(NewsApiClient):
         # TODO: How to save when (time) query was made
         out_file = open("articles.json", "a") 
         json.dump(all_articles, out_file, indent = 6) 
+        out_file.write('\n')
         out_file.close() 
 
     def get_top_headlines(self):
