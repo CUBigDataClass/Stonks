@@ -20,10 +20,10 @@ class NewsArticles(NewsApiClient):
     # KAFKA_SERVER = 'localhost:9093'
     # producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
-    def __init__(self,API_KEY, companies,domains, languages):
+    def __init__(self,API_KEY, companies,sources, languages):
         self.newsapi = NewsApiClient(api_key=API_KEY)  # Open connection to newsapi API 
         self.companies = companies
-        self.domains = domains
+        self.sources = sources
         self.languages = languages
         self.page = 1 # TODO: Change if more than 100 articles in 'totalResults'
         self.page_size = 100
@@ -39,26 +39,37 @@ class NewsArticles(NewsApiClient):
         if self.test_get_time(from_time) == False:
             print('Query time error')
             return -1 # TODO: Change return of error  (Need? api does handle errors)
-        print('from_time', from_time)
 
         # /v2/ All articles published AN HOUR AGO about some companies in english from Bloomberg (pg1)
         all_articles = self.newsapi.get_everything(
             q=q,        
-            domains=self.domains,
+            sources=self.sources,
             language=self.languages[0],
             from_param=from_time,
             page=self.page,
             page_size=self.page_size)
 
         # the json file where the output must be stored 
-        # TODO: How to save when (time) query was made
-        out_file = open("articles.json", "a") 
-        json.dump(all_articles, out_file, indent = 6) 
-        out_file.write('\n')
-        out_file.close() 
+        self.saveJson("all_articles.json", all_articles)
 
-    def get_top_headlines(self):
-        # TODO
+        return
+
+    def get_topheadlines(self):
+        "Returns topheadlines. TODO: How find out if it is per day or month. TODO: Add top ID number?"
+        # Params
+        # Query string of all companies we want to query
+        q = self.get_query_string()
+
+        # /v2/top-headlines
+        top_headlines = self.newsapi.get_top_headlines(
+            q=q,
+            sources=self.sources,                    
+            language=self.languages[0],
+            page=self.page,
+            page_size=self.page_size)
+
+        # the json file where the output must be stored 
+        self.saveJson("topheadlines.json", top_headlines)
         return
 
     # Helper funcs
@@ -74,6 +85,13 @@ class NewsArticles(NewsApiClient):
                 q = q+'OR'+str(self.companies[i])
         
         return q
+
+    def saveJson(self, out_filename, json_articles):
+        # TODO: How to save when (time) query was made
+        out_file = open(out_filename, "a") 
+        json.dump(json_articles, out_file, indent = 6) 
+        out_file.write('\n')
+        out_file.close() 
 
     def get_from_time(self):
         # TODO: [prev_hr_call_error] Add in something that knows if previous hour(s) calls failed to also add those hours in this time
@@ -110,9 +128,12 @@ if __name__=="__main__":
     newsArticles = NewsArticles(
         API_KEY, 
         companies,
-        domains, 
+        sources, 
         languages)
 
     newsArticles.get_everything()
+
+    # TODO: Only call this onces a day/month?
+    newsArticles.get_topheadlines()
     
     

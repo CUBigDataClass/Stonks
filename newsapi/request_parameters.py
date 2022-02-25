@@ -1,3 +1,3 @@
-domains = 'bloomberg.com'
+sources = 'bloomberg'
 companies = ['Microsoft']
 languages = ['en']
