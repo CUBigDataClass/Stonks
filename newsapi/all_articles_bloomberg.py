@@ -25,16 +25,14 @@ class NewsArticles(NewsApiClient):
         self.companies = companies
         self.domains = domains
         self.languages = languages
+        self.page = 1 # TODO: Change if more than 100 articles in 'totalResults'
+        self.page_size = 100
 
     def get_everything(self):
 
         # Params
-        domains = str(self.domains[0]) # bloomberg.com - Change if more domains added
-        language = str(self.languages[0]) # en - Change if more lanuages added
-        page = 1 # TODO: Change if more than 100 articles in 'totalResults'
         # Query string of all companies we want to query
         q = self.get_query_string()
-        print('q:',q, domains,language)
 
         # Error Check: Only from one month ago
         from_time = self.get_from_time()
@@ -45,14 +43,16 @@ class NewsArticles(NewsApiClient):
 
         # /v2/ All articles published AN HOUR AGO about some companies in english from Bloomberg (pg1)
         all_articles = self.newsapi.get_everything(
-            q='Microsoft',        
-            domains='bloomberg.com',
-            language='en',
-            page=1)
-
+            q=str(q),        
+            domains=str(self.domains),
+            language=str(self.languages[0]),
+            from_param=from_time,
+            page=self.page,
+            page_size=self.page_size)
 
         # the json file where the output must be stored 
-        out_file = open("articles.json", "w") 
+        # TODO: How to save when (time) query was made
+        out_file = open("articles.json", "a") 
         json.dump(all_articles, out_file, indent = 6) 
         out_file.close() 
 
@@ -99,9 +99,6 @@ class NewsArticles(NewsApiClient):
             return False
 
 
-
-
-
 # Get articles
 if __name__=="__main__":
     # # Kafka definition
@@ -116,4 +113,5 @@ if __name__=="__main__":
         languages)
 
     newsArticles.get_everything()
+    
     
