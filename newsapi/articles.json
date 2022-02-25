@@ -1,5 +1,266 @@
 {
       "status": "ok",
-      "totalResults": 0,
-      "articles": []
+      "totalResults": 92,
+      "articles": [
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "John Gruber",
+                  "title": "Facebook and Google\u2019s Dependence Upon Advertising",
+                  "description": "Facebook\u2019s first-ever drop in users is an ominous sign\u00a0for a business that relies almost entirely on ads. Google should watch out too.",
+                  "url": "https://www.bloomberg.com/opinion/articles/2022-02-03/facebook-and-google-s-ad-addiction-can-t-last-forever-thanks-to-tiktok-web3",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i3qn0OtEkTSs/v1/1200x800.jpg",
+                  "publishedAt": "2022-02-04T01:25:13Z",
+                  "content": "Parmy Olson, in an opinion piece for Bloomberg:\n\n\n But this week marked a troubling difference. Facebook\u2019s\nannouncement that user numbers had dropped for the first time laid\nbare a long-neglected vul\u2026 [+986 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Max Reyes",
+                  "title": "U.S. Bancorp Partners With Microsoft to Integrate Payments, Apps",
+                  "description": "",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-22/u-s-bancorp-partners-with-microsoft-to-integrate-payments-apps",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iZMqLfacjoCI/v0/1200x860.jpg",
+                  "publishedAt": "2022-02-22T13:30:00Z",
+                  "content": "U.S. Bancorp is doubling down on its growing digital-banking operations by partnering with \r\nMicrosoft Corp. to improve offerings over the internet and on mobile apps.\r\nThe multiyear partnership is m\u2026 [+317 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Benjamin Stupples",
+                  "title": "Paul Allen's Family Office Spins Out $8 Billion Investment Firm",
+                  "description": "The family office of Microsoft Corp. co-founder Paul Allen has spun out its investment-management group into a standalone business catering to the world\u2019s super-rich.",
+                  "url": "https://www.bloomberg.com/news/articles/2022-01-25/paul-allen-s-family-office-spins-out-8-billion-investment-firm",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iaNigfox7m5M/v0/1200x812.jpg",
+                  "publishedAt": "2022-01-25T19:17:19Z",
+                  "content": "The family office of \r\nMicrosoft Corp. co-founder Paul Allen has spun out its investment-management group into a standalone business catering to the worlds super-rich.\r\nVulcan Capital is now Cercano \u2026 [+1665 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Dina Bass",
+                  "title": "Microsoft's Mysterious Cloud Business",
+                  "description": "The company\u00a0gives investors only limited information about the health of its critical Azure unit.",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-01-27/microsoft-azure-is-the-company-s-most-mysterious-business",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i4FWshjShlYQ/v0/1200x800.jpg",
+                  "publishedAt": "2022-01-27T11:45:12Z",
+                  "content": "What to know in techGet insights from reporters around the world in the Fully Charged newsletter.\r\nHi, its Dina. Dont blame fickle investors for the multibillion-dollar swings in Microsofts market va\u2026 [+3654 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "David McLaughlin",
+                  "title": "Microsoft Deal for Activision to Be Reviewed by FTC in U.S.",
+                  "description": "The U.S. antitrust review of Microsoft Corp.\u2019s proposed acquisition of Activision Blizzard Inc. will be handled by the Federal Trade Commission, according to a person familiar with the matter, putting the deal in the hands of an agency that has vowed more agg\u2026",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-01/microsoft-deal-for-activision-to-be-reviewed-by-ftc-in-u-s",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iyIl3dkKtfDw/v0/1200x800.jpg",
+                  "publishedAt": "2022-02-01T03:53:50Z",
+                  "content": "The U.S. antitrust review of \r\nMicrosoft Corp.s proposed acquisition of \r\nActivision Blizzard Inc. will be handled by the \r\nFederal Trade Commission, according to a person familiar with the matter, p\u2026 [+1616 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Bloomberg",
+                  "title": "Why Gaming Consolidation Will Shape the Metaverse",
+                  "description": "Microsoft and Take-Two Interactive may have started a consolidation frenzy with their acquisitions of Activision Blizzard and Zynga, respectively. CFRA VP of Equity Research John Freeman explains how the consolidation of the gaming industry will expedite oppo\u2026",
+                  "url": "https://www.bloomberg.com/news/videos/2022-02-08/why-gaming-consolidation-will-shape-the-metaverse-video",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iFdvC.kVupPI/v3/-1x-1.jpg",
+                  "publishedAt": "2022-02-08T21:13:12Z",
+                  "content": "Beginning of dialog window. Escape will cancel and close the window.\r\nText\r\nColor\r\nWhite\r\nBlack\r\nRed\r\nGreen\r\nBlue\r\nYellow\r\nMagenta\r\nCyanTransparency\r\nOpaque\r\nSemi-Transparent\r\nBackground\r\nColor\r\nBlac\u2026 [+566 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": null,
+                  "title": "Microsoft's Slowing Cloud Growth Raises Concerns (Podcast)",
+                  "description": "Understand every aspect of the global economy \u2013 and know how to make your next move.",
+                  "url": "https://www.bloomberg.com/news/audio/2022-01-26/microsoft-s-slowing-cloud-growth-raises-concerns-podcast",
+                  "urlToImage": null,
+                  "publishedAt": "2022-01-26T02:58:28Z",
+                  "content": "Dina Bass, Bloomberg's tech reporter and Seattle Bureau Chief, discusses Microsoft earnings with Rishaad Salamat and Bryan Curtis on Bloomberg Daybreak Asia.\r\nJan 26, 2022"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Tim Quinson",
+                  "title": "Many Big ESG Funds Are Just Glorified Market Trackers",
+                  "description": "In the recent market tumult, the largest ESG-focused exchange-traded funds in the U.S. are again showing that they are little more than market-trackers\u2014with even worse performance.",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-02-02/many-big-esg-funds-are-just-glorified-market-trackers",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ilUinL6Xda4g/v0/1200x900.jpg",
+                  "publishedAt": "2022-02-02T11:15:12Z",
+                  "content": "You're reading the Bloomberg Green newsletter. Sign up here to get it in your inbox daily. \r\nIn climate news today...\r\nIn the recent market tumult, the largest ESG-focused exchange-traded funds in th\u2026 [+3602 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "David Rovella",
+                  "title": "Your Evening Briefing: Wall Street Squirms as Fed Hikes Await",
+                  "description": "Get caught up.",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-02-07/bloomberg-evening-briefing-wall-street-squirms-as-fed-rate-hikes-loom",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/idwjIw7iK9pU/v0/1200x800.jpg",
+                  "publishedAt": "2022-02-07T23:03:03Z",
+                  "content": "U.S. stocks fell late\u00a0Monday amid a renewed decline\u00a0by big tech firms. The tech-heavy Nasdaq 100 ended near the days low, led downward by Facebook-parent Meta, Google-parent Alphabet and Microsoft.\u00a0W\u2026 [+373 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Nico Grant",
+                  "title": "Google Is Searching for a Way to Win the Cloud",
+                  "description": "Trailing far behind its biggest rivals, the company is undergoing a multiyear effort to improve the reliability of its infrastructure.",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-02/google-searches-for-way-to-win-cloud-share-from-amazon-web-services-microsoft",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iMxMkAp.3yW8/v0/1200x630.jpg",
+                  "publishedAt": "2022-02-02T12:00:18Z",
+                  "content": "When Amazons cloud computing network \r\nwent down on Dec. 7, it hampered a broad swath of companies that rely on its servers, including \r\nDisney, \r\nNetflix, and \r\nTicketmaster. The rare company with r\u2026 [+549 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Jason Schreier",
+                  "title": "Sony's Real Strategy for Bungie Is a Subscription Service",
+                  "description": "Hi everyone, it\u2019s Jason. Today we\u2019re looking at the latest gaming acquisition, but first...",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-02-04/sony-s-plan-with-video-game-studio-bungie-is-a-subscription-service",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ilQGUHj5yKmk/v1/1200x800.jpg",
+                  "publishedAt": "2022-02-04T20:00:12Z",
+                  "content": "Go deep inside the business of video games.Get Jason Schreier's Game On newsletter every Friday. \r\nHi everyone, its Jason. Today were looking at the latest gaming acquisition, but first...\r\nThis week\u2026 [+4758 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Dina Bass",
+                  "title": "Planes to Pitches: Boeing's Seattle Headquarters Becomes Sounders Soccer Center",
+                  "description": "10-year plan will include training pitches, office space and housing",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-16/planes-to-pitches-boeing-s-seattle-headquarters-becomes-sounders-soccer-center",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/in29C7MfvjHY/v1/1200x676.jpg",
+                  "publishedAt": "2022-02-16T20:27:10Z",
+                  "content": "Boeing Co.s former commercial airplane headquarters outside Seattle is becoming\u00a0a training and office facility for the Sounders Major League Soccer team.\r\nThe complex, opening in 2024, will be called\u2026 [+1268 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": null,
+                  "title": "No Full Lockdown for 'Overwhelmed' Hong Kong: Virus Update",
+                  "description": "Hong Kong\u2019s leader said a growing outbreak of the omicron variant has \u201coverwhelmed\u201d the city\u2019s government, but denied she planned to impose a total lockdown like those in mainland Chinese cities. The city is set to report about 1,510 confirmed cases Tuesday a\u2026",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-15/microsoft-back-to-office-trudeau-emergency-powers-virus-update",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/issqANF.wQxc/v1/1200x801.jpg",
+                  "publishedAt": "2022-02-15T05:03:30Z",
+                  "content": "Hong Kongs leader \r\nsaid a growing outbreak of the omicron variant has overwhelmed the citys government, but denied she planned to impose a total lockdown like those in mainland Chinese cities. The c\u2026 [+9708 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "David McLaughlin",
+                  "title": "FTC's Khan Lands 2-0 Winning Streak With Lockheed Deal Collapse",
+                  "description": "U.S. Federal Trade Commission Chair Lina Khan just notched her second major merger win in the span of a week -- all without stepping foot into court.",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-14/ftc-s-khan-lands-2-0-winning-streak-with-lockheed-deal-collapse",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/idLA8amBNmwc/v1/1200x800.jpg",
+                  "publishedAt": "2022-02-14T17:55:12Z",
+                  "content": "U.S. Federal Trade Commission Chair Lina Khan just notched her second major merger win in the span of a week -- all without stepping foot into court.\r\nLockheed Martin Corp.s \r\nannouncement Sunday tha\u2026 [+1648 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Katharine Gemmell",
+                  "title": "Lawyer Bonuses Leaves U.K. M&A Watchdog Battling for Talent",
+                  "description": "The U.K.\u2019s antitrust regulator is fighting to attract the right talent as the lure of the private sector\u2019s record salaries means a hefty pay cut for specialists wanting to work for the government.",
+                  "url": "https://www.bloomberg.com/news/articles/2022-02-02/lawyers-london-bonuses-leave-m-a-watchdog-fighting-for-talent",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ijvvNgRt49C0/v0/1200x800.jpg",
+                  "publishedAt": "2022-02-02T12:48:10Z",
+                  "content": "The U.K.s antitrust regulator is fighting to attract the right talent as the lure of the private sectors record salaries means a hefty pay cut for specialists wanting to work for the government.\r\nAnd\u2026 [+1713 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Tim Quinson",
+                  "title": "Finding Mutual Funds Without Fossil-Fuel Holdings Isn't Easy",
+                  "description": "In the U.S., there are just\u00a015 mutual funds (with the highest sustainability ratings from Morningstar Inc.) that have zero exposure to fossil fuels.",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-02-09/finding-mutual-funds-without-fossil-fuel-holdings-isn-t-easy",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ia0p67N9P6c0/v0/1200x800.jpg",
+                  "publishedAt": "2022-02-09T11:15:16Z",
+                  "content": "You're reading the Bloomberg Green newsletter. Sign up here to get it in your inbox daily. \r\nIn climate news today...\r\nIn the U.S., there are just\u00a015 mutual funds (with the highest sustainability rat\u2026 [+4109 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Alex Webb",
+                  "title": "Venture Investors' $1.4 Billion Bet on News Faces a Reality Check",
+                  "description": "The strategy is to build a narrow audience of passionate followers and then go broad.",
+                  "url": "https://www.bloomberg.com/news/articles/2022-01-24/axios-punchbowl-protocol-other-online-news-sites-attract-investor-interest",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iMK0326Wfmzw/v0/1200x630.jpg",
+                  "publishedAt": "2022-01-24T13:00:13Z",
+                  "content": "Spiffy online news outlets are hot again. Every month seems to welcome a new publication built on an established journalists existing audience. Recent years have brought Air Mail, Puck, Punchbowl New\u2026 [+2946 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Natasha Solo-Lyons",
+                  "title": "Your Evening Briefing: Investors See Growth Despite Looming Rate Hikes",
+                  "description": "Get caught up.",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-02-08/bloomberg-evening-briefing-russia-undercuts-macron-s-report-of-a-putin-deal",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iuwPOb2_vGbc/v0/1200x800.jpg",
+                  "publishedAt": "2022-02-08T22:04:35Z",
+                  "content": "The day's biggest storiesGet caught up with the Evening Briefing.\r\nU.S. stocks rose in a broad-based rally as gains seemed to signal improving investor confidence despite looming Fed tightening.\u00a0The \u2026 [+3921 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Siraj Datoo, Shamim Adam",
+                  "title": "Your Weekend Reading: Facebook Faces a Big Reality Check",
+                  "description": "Get caught up.",
+                  "url": "https://www.bloomberg.com/news/newsletters/2022-02-05/bloomberg-weekend-reading-facebook-faces-a-big-reality-check-as-amazon-soars",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i4cTep.aHE3o/v0/1200x800.jpg",
+                  "publishedAt": "2022-02-05T12:30:15Z",
+                  "content": "You're reading the Weekend Reading newsletter. Sign up here to get it in your inbox each weekend, plus a weekday version with the biggest stories.\r\nFacebook-parent Meta\u00a0dropped below Microsoft in ter\u2026 [+2754 chars]"
+            },
+            {
+                  "source": {
+                        "id": "bloomberg",
+                        "name": "Bloomberg"
+                  },
+                  "author": "Ryan Vlastelica",
+                  "title": "Strong Tech Earnings Lend Measure of Hope to Beaten-Down Market - Bloomberg",
+                  "description": "Strong Tech Earnings Lend Measure of Hope to Beaten-Down Market\u00a0\u00a0Bloomberg",
+                  "url": "https://www.bloomberg.com/news/articles/2022-01-26/strong-tech-earnings-lend-measure-of-hope-to-beaten-down-market",
+                  "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iQvWIkJVvxfY/v2/1200x675.png",
+                  "publishedAt": "2022-01-26T16:09:51Z",
+                  "content": "Shares of technology stocks rallied Wednesday, after strong results from both Microsoft Corp. and Texas Instruments Inc. underlined the sectors growth outlook, helping to ease investor concerns ahead\u2026 [+2185 chars]"
+            }
+      ]
 }

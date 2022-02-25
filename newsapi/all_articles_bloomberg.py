@@ -45,12 +45,12 @@ class NewsArticles(NewsApiClient):
 
         # /v2/ All articles published AN HOUR AGO about some companies in english from Bloomberg (pg1)
         all_articles = self.newsapi.get_everything(
-            q=q,        
-            domains=domains,
-            language=language,
-            page=page)
+            q='Microsoft',        
+            domains='bloomberg.com',
+            language='en',
+            page=1)
 
-            
+
         # the json file where the output must be stored 
         out_file = open("articles.json", "w") 
         json.dump(all_articles, out_file, indent = 6) 
