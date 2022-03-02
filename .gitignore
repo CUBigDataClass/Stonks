@@ -1,5 +1,6 @@
 # API keys
 *keys.py
+*gcp_keys.json
 
 # Jupyter Notebook Checkpoints
 *.ipynb_checkpoints
