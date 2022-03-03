@@ -9,7 +9,7 @@ consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers = KAFKA_SERVER,
                          value_deserializer = lambda m : loads(m.decode('utf-8')))
 
 # google cloud storage configuration
-bucket_name = 'stonks_cold_storage'
+bucket_name = 'stonks_chilly_storage'
 destination_blob_name = 'twitter_stream'
 storage_client = storage.Client()
 bucket = storage_client.bucket(bucket_name)
