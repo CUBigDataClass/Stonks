@@ -1,0 +1,95 @@
+version: "3"
+
+services:
+  zookeeper:
+    image: 'wurstmeister/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    networks:
+      - kafka_network
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    restart: unless-stopped
+
+  kafka-1:
+    image: 'wurstmeister/kafka:latest'
+    container_name: kafka-1
+    ports:
+      - '29092:29092'
+      - '29093:29093'
+    networks:
+      - kafka_network
+    depends_on:
+      - zookeeper 
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: EXTERNAL_SAME_HOST://:29092, EXTERNAL_DIFFERENT_HOST://:29093, INTERNAL://:9092
+      #PLAINTEXT: unencrypted data  
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-1:9092, EXTERNAL_SAME_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT, EXTERNAL_SAME_HOST:PLAINTEXT, EXTERNAL_DIFFERENT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      #- KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      #ALLOW_PLAINTEXT_LISTENER=yes
+    restart: unless-stopped
+
+  kafka-tproducer:
+    container_name: kafka-tproducer
+    build: 
+      context: .
+      dockerfile: Dockerfile_tstream
+    networks:
+      - kafka_network
+    depends_on:
+      - kafka
+    entrypoint: 
+      - bash 
+      - -c 
+      - |
+        echo 'Giving Kafka a bit of time to start up…'
+        sleep 30
+        # Run the client code
+        python tstream.py
+
+  kafka-news:
+    container_name: kafka-news
+    build: 
+      context: .
+      dockerfile: Dockerfile_news
+    networks:
+      - kafka_network
+    depends_on:
+      - kafka
+    entrypoint: 
+      - bash 
+      - -c 
+      - |
+        echo 'Giving Kafka a bit of time to start up…'
+        sleep 30
+        # Run the client code
+        python news.py
+  
+  kafka-tconsumer:
+    container_name: kafka-tconsumer
+    build: 
+      context: .
+      dockerfile: Dockerfile_tconsumer
+    networks:
+      - kafka_network
+    depends_on:
+      - kafka 
+    entrypoint: 
+      - bash 
+      - -c 
+      - |
+        echo 'Giving Kafka a bit of time to start up…'
+        sleep 30
+        # Run the client code 
+        python consumer.py 
+  
+networks:
+    kafka_network:
+      name: kafka_docker_example_net
+    
+  
