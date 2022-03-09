@@ -6,6 +6,8 @@ from json import dumps
 from json import loads
 from multiprocessing import Process
 from keys import *
+import threading
+import time
 
 """
 To DO:
@@ -42,9 +44,11 @@ def stock_consumer():
     consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=[KAFKA_SERVER],value_deserializer=lambda m: loads(m.decode('utf-8')))
     for message in consumer:
         print(1)
-        print(message)
+        time.sleep(1)
+        #print(message)
         #put new data in to cold storage
         #parse the new data put it in to postgres
+
 
 def news_consumer():
     TOPIC_NAME='news'
@@ -52,7 +56,8 @@ def news_consumer():
     consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=[KAFKA_SERVER],value_deserializer=lambda m: loads(m.decode('utf-8')))
     for message in consumer:
         print(2)
-        print(message)
+        time.sleep(1)
+        #print(message)
 
 """
 for message in consumer:
@@ -61,8 +66,14 @@ for message in consumer:
     print(message)
 """
 if __name__ == '__main__':
+    thread1 = threading.Thread(target=stock_consumer)
+    thread1.start()
+    thread2 = threading.Thread(target=news_consumer)
+    thread2.start()
+    """
     Process(target=stock_consumer()).start()
     Process(target=news_consumer()).start()
+    """
 """
 parse the info further and put it in to storage
 
