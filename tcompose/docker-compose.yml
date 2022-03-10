@@ -56,7 +56,7 @@ services:
     container_name: kafka-news
     build: 
       context: .
-      dockerfile: Dockerfile_news
+      dockerfile: Dockerfile_newstemp
     networks:
       - kafka_network
     depends_on:

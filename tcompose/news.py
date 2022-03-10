@@ -44,11 +44,18 @@ class NewsArticles(NewsApiClient):
             
             
             # the json file where the output must be stored 
-            self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+            #self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+            #print(raw_data)
+            self.send(raw_data,company=company)
 
         return
+    def send(self,raw_data,company):
+        #home = str(Path.home()) + '/'  # `/root/` for docker containers
+    
+
 
     # Helper func: save json/json
+    """
     def saveJson(self,raw_data,company,file_name_ending):
         
         # Get home directory
@@ -81,6 +88,7 @@ class NewsArticles(NewsApiClient):
         ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
         out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
         out_file.close()
+        """
         
     # Helper func: Get previous time parameters
     def get_from_time(self):
@@ -114,10 +122,10 @@ class NewsArticles(NewsApiClient):
 
 # Get articles
 if __name__ == "__main__":
-    TOPIC_NAME = 'news'
+    #TOPIC_NAME = 'news'
 
-    KAFKA_SERVER = 'kafka-1:9092'
-    producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v:dumps(v).encode('utf-8'))
+    #KAFKA_SERVER = 'kafka-1:9092'
+    #producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v:dumps(v).encode('utf-8'))
 
     newsArticles = NewsArticles(
         API_KEY_NEWSAPI, 
