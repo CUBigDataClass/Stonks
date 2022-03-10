@@ -68,7 +68,7 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code
-        python news.py
+        cron && tail -f /var/log/cron.log
   
   kafka-tconsumer:
     container_name: kafka-tconsumer
@@ -86,7 +86,7 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code 
-        cron && tail -f /var/log/cron.log
+        python consumer.py
   
 networks:
     kafka_network:
