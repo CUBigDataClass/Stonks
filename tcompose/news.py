@@ -13,6 +13,8 @@ import requests
 import schedule
 import json
 
+from pathlib import Path
+
 class NewsArticles(NewsApiClient):
     """Using from newsapi's NewsApiClient. Adding functions to get our customized queries."""
 
