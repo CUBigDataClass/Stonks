@@ -86,7 +86,7 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code 
-        python consumer.py 
+        cron && tail -f /var/log/cron.log
   
 networks:
     kafka_network:
