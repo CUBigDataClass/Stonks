@@ -41,13 +41,13 @@ class NewsArticles(NewsApiClient):
                 page_size=self.page_size)            
             
             # the json file where the output must be stored 
-
-
-
-
-
+<<<<<<< HEAD
+            #self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+            #print(raw_data)
+            self.send(raw_data,company=company)
+=======
             self.saveJson(raw_data,companyName=company,companyTicker='')
-
+>>>>>>> 2eca45ea73ad47e4a0d747e1c6cd6d34c550bc77
 
         return
     def send(self,raw_data,company):
@@ -56,22 +56,22 @@ class NewsArticles(NewsApiClient):
 
 
     # Helper func: save json/json
-
-
-
+<<<<<<< HEAD
+    """
+    def saveJson(self,raw_data,company,file_name_ending):
         
-
-
+        # Get home directory
+        home = str(Path.home())+'/' # `/root/` for docker containers
         
-
-
-
-
-
-
-
+        # Save as json file        
+        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
+        out_filename = company_no_space + file_name_ending
+        out_file = open(home + out_filename, "w")  
+        json.dump(raw_data, out_file, indent = 6) 
+        out_file.close() 
+=======
     def saveJson(self,raw_data,companyName='',companyTicker=''):      
-
+>>>>>>> 2eca45ea73ad47e4a0d747e1c6cd6d34c550bc77
 
         # Add company field in raw_data["articles"] json 
         articles = self.addCompanyUniqueField(raw_data,companyName,companyTicker)
