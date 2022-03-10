@@ -5,7 +5,6 @@ from last_request_date import *
 
 from datetime import datetime, timedelta
 import time
-
 from json import dumps
 from json import loads
 from kafka import KafkaProducer
@@ -40,53 +39,25 @@ class NewsArticles(NewsApiClient):
                 page=self.page,
                 page_size=self.page_size)            
             
-            # the json file where the output must be stored 
-
-
-
-
-
+            # the json file where the output must be stored
             self.saveJson(raw_data,companyName=company,companyTicker='')
-
-
         return
-    def send(self,raw_data,company):
-        #home = str(Path.home()) + '/'  # `/root/` for docker containers
-    
-
 
     # Helper func: save json/json
-
-
-
-        
-
-
-        
-
-
-
-
-
-
-
-    def saveJson(self,raw_data,companyName='',companyTicker=''):      
-
-
+    def saveJson(self,raw_data,companyName='',companyTicker=''):
         # Add company field in raw_data["articles"] json 
         articles = self.addCompanyUniqueField(raw_data,companyName,companyTicker)
-        
         print("articles:",articles)
         response=loads(json.dumps(articles))
         producer.send(TOPIC_NAME, response)
         
         #######################################################################
+        """
         # Update request timestamp
         out_filename = 'last_request_date.py'
         # Get home directory
         home = str(Path.home())+'/' # `/root/` for docker containers
-        out_file = open(home + out_filename, "w")  
-        
+        out_file = open(home + out_filename, "w")
         ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
         out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
         out_file.close()
@@ -133,10 +104,10 @@ class NewsArticles(NewsApiClient):
 
 # Get articles
 if __name__ == "__main__":
-    #TOPIC_NAME = 'news'
+    TOPIC_NAME = 'news'
 
-    #KAFKA_SERVER = 'kafka-1:9092'
-    #producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v:dumps(v).encode('utf-8'))
+    KAFKA_SERVER = 'kafka-1:9092'
+    producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v:dumps(v).encode('utf-8'))
 
     newsArticles = NewsArticles(
         API_KEY_NEWSAPI, 
