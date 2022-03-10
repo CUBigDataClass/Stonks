@@ -5,4 +5,4 @@
 # Jupyter Notebook Checkpoints
 *.ipynb_checkpoints
 
-__pycache__/
+*__pycache__/*
