@@ -1,8 +1,11 @@
 /*Sidebar and navbar base reference W3 school: https://www.w3schools.com/w3css/w3css_sidebar.asp*/
 /* Add a black background color to the top navigation */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;1,400&display=swap");
+
 .topnav {
-  background-color: #4EA261;
-  ;
+  background-color: #4ea261;
+
   overflow: hidden;
 }
 
@@ -18,7 +21,7 @@
 
 /* Change the color of links on hover */
 .topnav a:hover {
-  background-color: #ddd; 
+  background-color: #ddd;
   color: black;
 }
 
@@ -29,10 +32,9 @@
 }
 
 /*center class*/
-.center
-{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
