@@ -1,139 +1,132 @@
 from newsapi import NewsApiClient
 from request_parameters import * 
-import datetime
-import json
+from keys import *
+from last_request_date import *
 
+from datetime import datetime, timedelta
+import time
+
+from json import dumps
 from json import loads
-from keys import * #?
+from kafka import KafkaProducer
+import requests
+import schedule
 import json
 
-# from kafka import KafkaProducer
-# import numpy as np
-# import statistics as stats
-# import requests
-# from finviz.screener import Screener
+from pathlib import Path
 
 class NewsArticles(NewsApiClient):
-    # "Inherits from newsapi's NewsApiClient class. Adding functions to get our customized queries."
-    # # Kafka definition
-    # TOPIC_NAME = 'stock_data'
-    # KAFKA_SERVER = 'localhost:9093'
-    # producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+    """Using from newsapi's NewsApiClient. Adding functions to get our customized queries."""
 
-    def __init__(self,API_KEY, companies,sources, languages):
-        self.newsapi = NewsApiClient(api_key=API_KEY)  # Open connection to newsapi API 
+    def __init__(self,API_KEY_NEWSAPI, companies,sources, languages):
+        self.newsapi = NewsApiClient(api_key=API_KEY_NEWSAPI)  # Open connection to newsapi API 
         self.companies = companies
         self.sources = sources
         self.languages = languages
-        self.page = 1 # TODO: Change if more than 100 articles in 'totalResults'
+        self.page = 1 
         self.page_size = 100
 
     def get_everything(self):
-
-        # Params
-        # Query string of all companies we want to query
-        q = self.get_query_string()
-
-        # Error Check: Only from one month ago
         from_time = self.get_from_time()
-        if self.test_get_time(from_time) == False:
-            print('Query time error')
-            return -1 # TODO: Change return of error  (Need? api does handle errors)
 
-        # /v2/ All articles published AN HOUR AGO about some companies in english from Bloomberg (pg1)
-        all_articles = self.newsapi.get_everything(
-            q=q,        
-            sources=self.sources,
-            language=self.languages[0],
-            from_param=from_time,
-            page=self.page,
-            page_size=self.page_size)
-
-        # the json file where the output must be stored 
-        self.saveJson("all_articles.json", all_articles)
-
-        return
-
-    def get_topheadlines(self):
-        "Returns topheadlines. TODO: How find out if it is per day or month. TODO: Add top ID number?"
-        # Params
-        # Query string of all companies we want to query
-        q = self.get_query_string()
-
-        # /v2/top-headlines
-        top_headlines = self.newsapi.get_top_headlines(
-            q=q,
-            sources=self.sources,                    
-            language=self.languages[0],
-            page=self.page,
-            page_size=self.page_size)
-
-        # the json file where the output must be stored 
-        self.saveJson("topheadlines.json", top_headlines)
-        return
-
-    # Helper funcs
-    def get_query_string(self):
-        "Return a string with companies to query."
-        q = ''
+        # Loop through specificied companies
         for i in range(len(self.companies)):
-            # If empty string add company name
-            if len(q) == 0:
-                q = str(self.companies[i])
+            company = str(self.companies[i])          
+            
+            # /v2/ All articles published some time ago of company
+            raw_data = self.newsapi.get_everything(
+                q=company,        
+                sources=self.sources,
+                language=self.languages[0],
+                from_param=from_time,
+                page=self.page,
+                page_size=self.page_size)
+            
+            
+            # the json file where the output must be stored 
+            self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
 
-            else:
-                q = q+'OR'+str(self.companies[i])
-        
-        return q
+        return
 
-    def saveJson(self, out_filename, json_articles):
+    # Helper func: save json/json
+    def saveJson(self,raw_data,company,file_name_ending):
         # TODO: How to save when (time) query was made
-        out_file = open(out_filename, "a") 
-        json.dump(json_articles, out_file, indent = 6) 
-        out_file.write('\n')
+        # TODO: Change hard code folder
+
+        # Get home directory
+        home = str(Path.home())+'/' # `/root/` for docker containers
+        
+        # Save as json file        
+        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
+        out_filename = company_no_space + file_name_ending
+        out_file = open(home + out_filename, "w")  
+        json.dump(raw_data, out_file, indent = 6) 
         out_file.close() 
 
+        #Send json file to kafka (Currently commented out)
+        out_file = open(home + out_filename) 
+        response=json.load(out_file)
+        print(response)
+        
+        ## TODO: DEBUG with for spending to kafka
+        #responseloads = loads(str(raw_data))
+        #print('rk', responseloads)
+        #producer.send(TOPIC_NAME, responseloads)
+        #producer.send(TOPIC_NAME, responseloads['articles'])
+        out_file.close() 
+        
+        #######################################################################
+        # Update request timestamp
+        out_filename = 'last_request_date.py'
+        out_file = open(home + out_filename, "w")  
+        
+        ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
+        out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
+        out_file.close()
+        
+    # Helper func: Get previous time parameters
     def get_from_time(self):
-        # TODO: [prev_hr_call_error] Add in something that knows if previous hour(s) calls failed to also add those hours in this time
-        now = datetime.datetime.now()
-
-        # Get previous hour(s)/ [TODO] month ago
-        hours = 1 # TODO: Change per [prev_hr_call_error] 
-        previous_hour_time = int(now.hour) - hours
         
-        # Change query time to hours(s)/ [TODO] month ago
-        from_time = now.replace(hour=previous_hour_time, microsecond=0) # TODO: Change [year, month, day] per [prev_hr_call_error]
+        # Default to initalized value
+        now = datetime.now()
+        day = timedelta(days=1)
+        prev_time = day            
         
+        #month = datetime.timedelta(weeks=4)
+        
+        # First request
+        if last_request_date_NEWSAPI is None:
+            return None
+        
+        #previous_timestamp = datetime.datetime.fromtimestamp(last_request_date_NEWSAPI)
+        previous_timestamp=datetime.fromtimestamp(last_request_date_NEWSAPI)
+        days_delta = now - previous_timestamp
+        
+        # more than than 1 month ago/4 weeks
+        if 28 < days_delta.days :
+            return None
+        
+        # Calc from last day request made within 1 month/4weeks
+        num_prev_days_ago = days_delta.days*day            
+        from_time = now - num_prev_days_ago
+        
+        from_time = from_time.replace(microsecond=0)
         return from_time.isoformat()
-
-
-    def test_get_time(self, from_time):
-        "Check if query time is valid for our plan (1 month ago)"
-        month_ago = int(datetime.datetime.now().month) - 1
-        month_ago_query = datetime.datetime.now().replace(month=month_ago,microsecond=0).isoformat()
-
-        if month_ago_query <= from_time:
-            return True
-        else:
-            return False
 
 
 # Get articles
 if __name__=="__main__":
-    # # Kafka definition
-    # TOPIC_NAME = 'stock_data'
-    # KAFKA_SERVER = 'localhost:9093'
-    # producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+    # Kafka definition
+    TOPIC_NAME = 'newsapi_data'
+    KAFKA_SERVER = 'localhost:9092' # TODO: check if right port for docker-compose.yml file
+    #producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     newsArticles = NewsArticles(
-        API_KEY, 
+        API_KEY_NEWSAPI, 
         companies,
         sources, 
         languages)
 
     newsArticles.get_everything()
-
-    # TODO: Only call this onces a day/month?
-    newsArticles.get_topheadlines()
     
     
