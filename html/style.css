@@ -1,0 +1,38 @@
+/*Sidebar and navbar base reference W3 school: https://www.w3schools.com/w3css/w3css_sidebar.asp*/
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #4EA261;
+  ;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: right;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd; 
+  color: black;
+}
+
+/* Active color */
+.topnav a.active {
+  background-color: #58b96f;
+  color: white;
+}
+
+/*center class*/
+.center
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
