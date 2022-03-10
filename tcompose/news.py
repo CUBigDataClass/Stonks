@@ -13,8 +13,6 @@ import requests
 import schedule
 import json
 
-from pathlib import Path
-
 class NewsArticles(NewsApiClient):
     """Using from newsapi's NewsApiClient. Adding functions to get our customized queries."""
 
@@ -40,48 +38,43 @@ class NewsArticles(NewsApiClient):
                 language=self.languages[0],
                 from_param=from_time,
                 page=self.page,
-                page_size=self.page_size)
-            
+                page_size=self.page_size)            
             
             # the json file where the output must be stored 
-            self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+            self.saveJson(raw_data,companyName=company,companyTicker='')
 
         return
 
     # Helper func: save json/json
-    def saveJson(self,raw_data,company,file_name_ending):
-        
-        # Get home directory
-        home = str(Path.home())+'/' # `/root/` for docker containers
-        
-        # Save as json file        
-        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
-        out_filename = company_no_space + file_name_ending
-        out_file = open(home + out_filename, "w")  
-        json.dump(raw_data, out_file, indent = 6) 
-        out_file.close() 
+    def saveJson(self,raw_data,companyName='',companyTicker=''):      
 
-        #Send json file to kafka (Currently commented out)
-        out_file = open(home + out_filename) 
-        response=json.load(out_file)
-        #print(response)
+        # Add company field in raw_data["articles"] json 
+        articles = self.addCompanyUniqueField(raw_data,companyName,companyTicker)
         
-        ## TODO: DEBUG with for spending to kafka
-        responseloads = loads(str(raw_data))
-        print('rk', responseloads)
-        producer.send(TOPIC_NAME, responseloads)
-        #producer.send(TOPIC_NAME, responseloads['articles'])
-        out_file.close() 
+        print("articles:",articles)
+        response=loads(json.dumps(articles))
+        producer.send(TOPIC_NAME, response)
         
         #######################################################################
         # Update request timestamp
         out_filename = 'last_request_date.py'
+        # Get home directory
+        home = str(Path.home())+'/' # `/root/` for docker containers
         out_file = open(home + out_filename, "w")  
         
         ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
         out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
         out_file.close()
         
+    #Helper func: add unique company identifier
+    def addCompanyUniqueField(self, raw_data,companyName='', companyTicker=''):
+        articles = raw_data["articles"]
+        for article in articles:
+            article["companyName"]=companyName
+            article["companyTicker"]=companyTicker
+
+        return articles   
+    
     # Helper func: Get previous time parameters
     def get_from_time(self):
         
@@ -126,5 +119,4 @@ if __name__ == "__main__":
         languages)
 
     newsArticles.get_everything()
-
-
+    
