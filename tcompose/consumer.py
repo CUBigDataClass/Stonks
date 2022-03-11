@@ -34,8 +34,8 @@ KAFKA_SERVER = 'kafka-1:9092'
 # KAFKA_SERVER= 'localhost:29092'
 # TOPIC_LIST= ['stock', 'news']
 consumer = KafkaConsumer(bootstrap_servers=[KAFKA_SERVER], value_deserializer=lambda m: loads(m.decode('utf-8')))
-# consumer.subscribe(TOPIC_NAME)
-consumer.subscribe(['stock', 'news'])
+consumer.subscribe('news')
+#consumer.subscribe(['stock', 'news'])
 # consumer.subscribe(TOPIC_LIST)
 # consumer.subscribe('news')
 # now=datetime.now()

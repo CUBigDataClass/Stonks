@@ -49,9 +49,12 @@ class NewsArticles(NewsApiClient):
     def saveJson(self,raw_data,companyName='',companyTicker=''):
         # Add company field in raw_data["articles"] json 
         articles = self.addCompanyUniqueField(raw_data,companyName,companyTicker)
-        print("articles:",articles)
-        response=loads(json.dumps(articles))
-        producer.send(TOPIC_NAME, response)
+        #print("articles:",articles)
+        for article in articles:
+            response=loads(json.dumps(article))
+            producer.send(TOPIC_NAME, response)
+            print("article:",article)
+            producer.flush()
         
         #######################################################################
         """
@@ -107,7 +110,6 @@ class NewsArticles(NewsApiClient):
 # Get articles
 if __name__ == "__main__":
     TOPIC_NAME = 'news'
-
     KAFKA_SERVER = 'kafka-1:9092'
     producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v:dumps(v).encode('utf-8'))
 
@@ -118,4 +120,5 @@ if __name__ == "__main__":
         languages)
 
     newsArticles.get_everything()
+    producer.flush
     
