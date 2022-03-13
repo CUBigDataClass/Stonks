@@ -32,7 +32,7 @@ class TwitterStream(Stream):
     #pritns data
     def process_data(self, raw_data):
         response = loads(raw_data)
-        print(response['text'])
+        #print(response['text'])
         #print(f'followers: {response["user"]["followers_count"]}')
         #print(f'timestamp: {response["created_at"]}\n')
         producer.send(TOPIC_NAME, response['text'])
@@ -71,7 +71,7 @@ def try_stream():
 # Start the Stream
 if __name__ == "__main__":
 
-    TOPIC_NAME = 'stock_data'
+    TOPIC_NAME = 'tweet'
     #KAFKA_SERVER = 'kafka:9092'
     #KAFKA_SERVER = 'kafka:9093'
     KAFKA_SERVER = 'kafka-1:9092'
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         API_KEY, API_KEY_SECERT,
         ACCESS_TOKEN, ACCESS_TOKEN_SECRET
     )
-    stream.filter(track=['Microsoft'], languages=['en'])
+    stream.filter(track=['google'], languages=['en'])
 
     """
     Process(target=t_stream()).start()

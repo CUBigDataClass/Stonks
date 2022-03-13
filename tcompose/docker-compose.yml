@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 
 services:
   zookeeper:
@@ -34,15 +34,15 @@ services:
       #ALLOW_PLAINTEXT_LISTENER=yes
     restart: unless-stopped
 
-  kafka-tproducer:
-    container_name: kafka-tproducer
+  kafka-tweets:
+    container_name: kafka-tweets
     build: 
       context: .
       dockerfile: Dockerfile_tstream
     networks:
       - kafka_network
     depends_on:
-      - kafka
+      - kafka-1
     entrypoint: 
       - bash 
       - -c 
@@ -51,34 +51,17 @@ services:
         sleep 30
         # Run the client code
         python tstream.py
-
-  kafka-news:
-    container_name: kafka-news
-    build: 
-      context: .
-      dockerfile: Dockerfile_news
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka
-    entrypoint: 
-      - bash 
-      - -c 
-      - |
-        echo 'Giving Kafka a bit of time to start up…'
-        sleep 30
-        # Run the client code
-        python news.py
+    restart: unless-stopped
   
   kafka-tconsumer:
-    container_name: kafka-tconsumer
+    container_name: kafka-consumer
     build: 
       context: .
       dockerfile: Dockerfile_tconsumer
     networks:
       - kafka_network
     depends_on:
-      - kafka 
+      - kafka-1
     entrypoint: 
       - bash 
       - -c 
@@ -87,9 +70,10 @@ services:
         sleep 30
         # Run the client code 
         python consumer.py 
+    restart: unless-stopped
   
 networks:
     kafka_network:
-      name: kafka_docker_example_net
+      name: kafka_networkk
     
   
