@@ -71,7 +71,9 @@ if __name__ == "__main__":
         API_KEY, API_KEY_SECERT,
         ACCESS_TOKEN, ACCESS_TOKEN_SECRET
     )
-    print("producer is producing...")
+    #print("producer is producing...")
     stream.filter(track=['Microsoft'], languages=['en'])
     producer.flush()
+
+    KAFKA_SERVER = 'kafka-1:9092'
 
