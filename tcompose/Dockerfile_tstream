@@ -1,6 +1,0 @@
-# makes docker image for producer
-FROM python:3.11.0a5-bullseye
-COPY / .
-#ADD tstream.py keys.py
-RUN pip install kafka-python tweepy requests schedule 
-CMD ["python", "tstream.py"]

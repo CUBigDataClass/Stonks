@@ -38,26 +38,7 @@ services:
     container_name: kafka-tweets
     build: 
       context: .
-      dockerfile: Dockerfile_tstream
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka-1
-    entrypoint: 
-      - bash 
-      - -c 
-      - |
-        echo 'Giving Kafka a bit of time to start up…'
-        sleep 30
-        # Run the client code
-        python tstream.py
-    restart: unless-stopped
-  
-  kafka-tconsumer:
-    container_name: kafka-consumer
-    build: 
-      context: .
-      dockerfile: Dockerfile_tconsumer
+      dockerfile: tweets
     networks:
       - kafka_network
     depends_on:
@@ -69,9 +50,9 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code 
-        python consumer.py 
+        python consumer.py & python tstream.py
     restart: unless-stopped
-  
+
 networks:
     kafka_network:
       name: kafka_networkk
