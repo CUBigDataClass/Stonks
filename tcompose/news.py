@@ -52,12 +52,11 @@ class NewsArticles(NewsApiClient):
         #print("articles:",articles)
         for article in articles:
             response=loads(json.dumps(article))
-            producer.send(TOPIC_NAME, response)
-            print("article:",article)
+            producer.send(TOPIC_NAME, response["content"])
+            # print("article:",article)
             producer.flush()
         
         #######################################################################
-        """
         # Update request timestamp
         out_filename = 'last_request_date.py'
         # Get home directory
@@ -66,7 +65,6 @@ class NewsArticles(NewsApiClient):
         ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
         out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
         out_file.close()
-        """
         
     #Helper func: add unique company identifier
     def addCompanyUniqueField(self, raw_data,companyName='', companyTicker=''):
@@ -109,6 +107,7 @@ class NewsArticles(NewsApiClient):
 
 # Get articles
 if __name__ == "__main__":
+    print('init news.py')
     TOPIC_NAME = 'news'
     KAFKA_SERVER = 'kafka-1:9092'
     producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v:dumps(v).encode('utf-8'))
@@ -120,5 +119,6 @@ if __name__ == "__main__":
         languages)
 
     newsArticles.get_everything()
+    print('news.py done')
     producer.flush
-    
+    print('end news.py')

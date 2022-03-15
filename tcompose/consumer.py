@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 from kafka import KafkaConsumer
@@ -70,10 +70,9 @@ for message in consumer:
     # print(message[6]["Time Series (Daily)"][current_date])
     # print(message[6]["Time Series (Daily)"])
     print(message)
-    if (message[0] == 'stock'):
-        print("russia")
-    elif (message[0] == 'news'):
-        print("news")
+
+    # if (message[0] == 'news'):
+    #     print(message)
 
     # print(message[0])
     # print(message[1])

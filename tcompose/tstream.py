@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from tweepy import Stream
 
 from keys import *
@@ -32,7 +32,7 @@ class TwitterStream(Stream):
     #pritns data
     def process_data(self, raw_data):
         response = loads(raw_data)
-        print(response['text'])
+        # print(response['text'])
         #print(f'followers: {response["user"]["followers_count"]}')
         #print(f'timestamp: {response["created_at"]}\n')
         producer.send(TOPIC_NAME, response['text'])

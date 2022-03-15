@@ -50,14 +50,14 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code 
-        python consumer.py
+        python3 consumer.py
     restart: unless-stopped
   
   kafka-news:
     container_name: kafka-news
     build: 
       context: .
-      dockerfile: Dockerfile_newstemp
+      dockerfile: Dockerfile_news
     networks:
       - kafka_network
     depends_on:
@@ -69,8 +69,7 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code
-        #cron && tail -f /var/log/cron.log
-        python news.py
+        cron && tail -f /var/log/cron.log
 
   kafka-tproducer:
     container_name: kafka-tproducer
@@ -89,7 +88,7 @@ services:
         sleep 30
         # Run the client code
         #cron && tail -f /var/log/cron.log
-        python tstream.py
+        python3 tstream.py
     restart: unless-stopped
     
 networks:
