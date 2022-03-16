@@ -6,15 +6,35 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
   </head>
+
   <body style="background-color: #0c0c0c">
     <!-- Nav bar -->
-    <div class="topnav">
-      <a href="#">Watchlist</a>
-      <a href="#">What we do</a>
-      <a href="#">Team</a>
-      <a class="active" href="#home">Home</a>
-    </div>
+    <section>
+      <div class="topnav">
+        <a href="#">Watchlist</a>
+        <a href="#">What we do</a>
+        <a href="#">Team</a>
+        <a class="active" href="#home">Home</a>
+      </div>
 
+      <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+          >&times;</a
+        >
+        <a href="#">NEED</a>
+        <a href="#">TO </a>
+        <a href="#">Change </a>
+        <a href="#">LATER</a>
+      </div>
+
+      <div id="main">
+        <button class="openbtn" onclick="openNav()">
+          &#9776; Open Sidebar
+        </button>
+        <h2>Collapsed Sidebar</h2>
+        <p>Content...</p>
+      </div>
+    </section>
     <img
       src="https://i.kym-cdn.com/entries/icons/original/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg"
       class="center"
