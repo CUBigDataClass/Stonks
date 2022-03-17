@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from json import loads, dumps
 from google.cloud import storage
+
 from kafka import KafkaConsumer
 #from google.cloud.sql.connector import connector
 #import pg8000.native
@@ -48,7 +49,6 @@ print("bah")
 # upload data from the stream to the bucket and postgres
 for message in consumer:
     print(message)
-
 """
 
 #with pool.connect() as db_conn:
