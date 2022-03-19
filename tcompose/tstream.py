@@ -18,7 +18,7 @@ class TwitterStream(Stream):
         """
         tweet = tweet.lower()
         companies_mentioned = []
-        for stock in stocks:
+        for stock in top100:
             if stock in tweet:
                 companies_mentioned.append(stock)
 
@@ -47,7 +47,10 @@ class TwitterStream(Stream):
         # Associate each company mentioned with the tweet
         companies_mentioned = self.get_companies(tweet_text)
         for corp in companies_mentioned:
-            response['company_name'] = corp
+            #print(corp)
+            #print(map1[corp])
+            #response['company_name'] = corp
+            response['ticker'] = map1[corp]
             producer.send(TOPIC_NAME, response)
             #print(response)
 
@@ -61,6 +64,7 @@ class TwitterStream(Stream):
 # Start the Stream
 if __name__ == "__main__":
     # Configuration for Kafka
+
     TOPIC_NAME = 'tweet'
     KAFKA_SERVER = 'kafka-1:9092'
     producer = KafkaProducer(

@@ -1,0 +1,16 @@
+# Pulling ubuntu image with a specific tag from the docker hub.
+FROM ubuntu:20.04
+
+# Updating the packages and installing cron, python3-pip, newsapi
+RUN apt-get update
+RUN apt-get -y install python3-pip
+RUN pip install kafka-python
+RUN pip install tweepy
+RUN pip install requests 
+RUN pip install sqlalchemy
+RUN pip install cloud-sql-python-connector[pg8000]
+RUN pip install google-cloud-storage
+RUN pip install pandas
+# Copy python files to root directory
+COPY / . 
+CMD ["python", "consumer.py"]
