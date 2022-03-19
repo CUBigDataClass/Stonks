@@ -38,7 +38,7 @@ services:
     container_name: tweets
     build: 
       context: .
-      dockerfile: tweets
+      dockerfile: tweetsCode/tweets
     networks:
       - kafka_network
     depends_on:
