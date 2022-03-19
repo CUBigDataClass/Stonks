@@ -12,7 +12,7 @@ import os
 
 class GCP_PostGreSQL():
     def __init__(self, connectionName, user, password, db, top_companies_tickers):
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '../../creds.json'
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
         self.connectionName = connectionName
         self.user = user
         self.password = password

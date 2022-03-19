@@ -23,4 +23,5 @@ if __name__ == "__main__":
     #print(st.get_prices_df_query())
     st.insert_all_historical_prices()
     #print(st.get_prices_df_query())
+    news = "CREATE TABLE IF NOT EXISTS news (article_id SERIAL PRIMARY KEY, company_ticker varchayhhr(255), article_URL VARCHAR(255), article_content VARCHAR(255)"
 
