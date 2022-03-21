@@ -8,6 +8,9 @@
 *.ipynb_checkpoints
 
 *.idea/*
+.idea/
+**/.idea/
+
 __pycache__/
 
 # Jupyter Notebook Checkpoints
