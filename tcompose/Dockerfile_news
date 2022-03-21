@@ -12,6 +12,11 @@ RUN apt-get -y install python3-pip
 RUN python3 -m pip install newsapi-python
 RUN pip install yfinance --upgrade --no-cache-dir
 RUN pip install schedule
+RUN pip install requests 
+RUN pip install sqlalchemy
+RUN pip install cloud-sql-python-connector[pg8000]
+RUN pip install google-cloud-storage
+RUN pip install pandas
 
 # TODO: Which kafka is needed?
 RUN pip install kafka

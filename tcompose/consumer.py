@@ -70,9 +70,11 @@ with pg.pool.connect() as db_conn:
             content=message[6]['text']
             date=message[6]['created_at']
             followers=str(message[6]['user']['followers_count'])
+            #sentimental analysis data here
+            #hypescore=
             #parse then upload to postgres tweets table
-            statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count) VALUES (%s,%s,%s,%s,%s)"""
-            db_conn.execute(statement, (ticker, url, content, date, followers))
+            statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count, hypescore) VALUES (%s,%s,%s,%s,%s,%d)"""
+            db_conn.execute(statement, (ticker, url, content, date, followers,hypescore))
 
         except Exception as e:
             print(e)

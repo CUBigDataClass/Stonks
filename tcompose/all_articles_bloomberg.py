@@ -29,6 +29,8 @@ class NewsArticles(NewsApiClient):
         self.page = 1 
         self.page_size = 100
 
+    #currently O(n^2) time complexity, could optimize
+    #maybe use dict
     def get_everything(self):
         from_time = self.get_from_time()
         #initializing connection
@@ -43,8 +45,8 @@ class NewsArticles(NewsApiClient):
 
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
-            for i in range(len(self.companies)):
-                company = str(self.companies[i])
+            for company in self.companies:
+                #company = str(self.companies[i])
                 # /v2/ All articles published some time ago of company
                 raw_data = self.newsapi.get_everything(
                     q=company,
@@ -53,16 +55,20 @@ class NewsArticles(NewsApiClient):
                     from_param=from_time,
                     page=self.page,
                     page_size=self.page_size)
+                #articles = self.addCompanyUniqueField(raw_data, companyName, companyTicker)
 
                 #raw_data['articles'] contains a list of articles
                 #thus for loop to iterate through each of the article
                 for article in raw_data['articles']:
+
                     #upload each article's bytes representation to bucket in a blob
                     blob.upload_from_string(json.dumps(article))
                     #parse then insert in to the news table
                     url=article['url']
+
                     #map1 allows it to convert to the ticker given company name.
                     ticker=map1[company]
+
                     date=article['publishedAt']
                     content=article['content']
                     statement = """ INSERT INTO news(company_ticker, article_URL, article_content,date_published) VALUES (%s,%s,%s,%s)"""
@@ -114,8 +120,17 @@ class NewsArticles(NewsApiClient):
         ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
         out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
         out_file.close()
-        
-    # Helper func: Get previous time parameters
+
+    # Helper func: add unique company identifier
+    def addCompanyUniqueField(self, raw_data, companyName='', companyTicker=''):
+        articles = raw_data["articles"]
+        for article in articles:
+            article["companyName"] = companyName
+            article["companyTicker"] = companyTicker
+
+        return articles
+
+        # Helper func: Get previous time parameters
     def get_from_time(self):
         
         # Default to initalized value
@@ -148,11 +163,19 @@ class NewsArticles(NewsApiClient):
 # Get articles
 if __name__=="__main__":
 
+    """
     newsArticles = NewsArticles(
         API_KEY_NEWSAPI, 
         companies,
         sources, 
         languages)
+    """
+#replaced company names to the one in companies file to use the map to ticker
+    newsArticles = NewsArticles(
+            API_KEY_NEWSAPI,
+            top100,
+            SOURCES,
+            LANGUAGES)
 
     newsArticles.get_everything()
 

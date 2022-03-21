@@ -25,17 +25,10 @@ if __name__ == "__main__":
     #st.query_company_information()
     #st.query_daily_prices()
     with pg.pool.connect() as db_conn:
-        result = db_conn.execute("select * from tweets")
-        for row in result:
-            print(row)
-        """
-        result = db_conn.execute("select * from news")
-        for row in result:
-            print(row)
+
+        #result = db_conn.execute("select * from tweets")
+        #result = db_conn.execute("select * from news")
         result = db_conn.execute("select * from daily_prices")
+        #result = db_conn.execute("select * from company_information")
         for row in result:
             print(row)
-        result = db_conn.execute("select * from company_information")
-        for row in result:
-            print(row)
-        """
