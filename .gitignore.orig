@@ -7,15 +7,15 @@
 # Jupyter Notebook Checkpoints
 *.ipynb_checkpoints
 
-
+<<<<<<< HEAD
 **/.idea/
 .idea/
-
+=======
 *.idea/*
 .idea/
 **/.idea/
 
-
+>>>>>>> 537c3352ff97328bd5dc4424d89453d167aa85ed
 __pycache__/
 
 # Jupyter Notebook Checkpoints
