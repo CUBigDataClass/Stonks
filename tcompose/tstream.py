@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from tweepy import Stream
 import json
 from keys import *

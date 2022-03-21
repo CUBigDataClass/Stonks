@@ -3,8 +3,14 @@
 *gcp_keys.json
 *db_keys.py
 *creds.json
+
 # Jupyter Notebook Checkpoints
 *.ipynb_checkpoints
 
-.idea/
+*.idea/*
 __pycache__/
+
+# Jupyter Notebook Checkpoints
+*.ipynb_checkpoints
+
+*__pycache__/*

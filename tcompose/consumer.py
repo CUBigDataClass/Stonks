@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from json import loads, dumps
 from google.cloud import storage
+
 from kafka import KafkaConsumer
 from google.cloud.sql.connector import connector
 import pg8000.native
@@ -79,6 +80,3 @@ with pg.pool.connect() as db_conn:
 
         # get sentiment score for the tweet
         # DO SENTIMENT ANALYSIS HERE
-
-        # insert into postgres db
-        # INSERT STATEMENT GOES HERE

@@ -1,0 +1,41 @@
+# Pulling ubuntu image with a specific tag from the docker hub.
+FROM ubuntu:20.04
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+
+# Updating the packages and installing cron, python3-pip, newsapi
+RUN apt-get update 
+RUN apt-get -y upgrade
+RUN apt-get -y install cron
+RUN apt-get -y install python3-pip
+RUN python3 -m pip install newsapi-python
+RUN pip install yfinance --upgrade --no-cache-dir
+RUN pip install schedule
+
+# TODO: Which kafka is needed?
+RUN pip install kafka
+RUN pip install kafka-python
+
+# Copy python files to root directory
+COPY news.py /root/news.py 
+COPY stockdata.py /root/stockdata.py 
+COPY keys.py /root/keys.py
+COPY last_request_date.py /root/last_request_date.py
+COPY request_parameters.py /root/request_parameters.py
+
+# Copy and give run.sh exec rights
+COPY run_newsapi.sh /root/run_newsapi.sh
+COPY run_stockdata.sh /root/run_stockdata.sh
+RUN chmod +x /root/run_newsapi.sh
+RUN chmod +x /root/run_stockdata.sh
+
+# TODO: to delete
+RUN apt-get -y install vim
+
+# Add crontab file in the cron directory and give execution rights
+ADD crontab_newsapi /etc/cron.d/crontab_newsapi
+RUN chmod 0644 /etc/cron.d/crontab_newsapi
+
+# Run the command on container startup
+CMD cron && tail -f /var/log/cron.log
