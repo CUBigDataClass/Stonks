@@ -2,10 +2,13 @@ from newsapi import NewsApiClient
 from request_parameters import * 
 from keys import *
 from last_request_date import *
-
+import os
+from google.cloud import storage
 from datetime import datetime, timedelta
 import time
-
+from companies import *
+from db_keys import *
+from postGres import *
 from json import dumps
 from json import loads
 from kafka import KafkaProducer
@@ -28,25 +31,53 @@ class NewsArticles(NewsApiClient):
 
     def get_everything(self):
         from_time = self.get_from_time()
+        #initializing connection
+        pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
+        bucket_name = 'stonksbucket'
+        destination_blob_name = 'news'
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(destination_blob_name)
 
+
+        with pg.pool.connect() as db_conn:
         # Loop through specificied companies
-        for i in range(len(self.companies)):
-            company = str(self.companies[i])          
-            
-            # /v2/ All articles published some time ago of company
-            raw_data = self.newsapi.get_everything(
-                q=company,        
-                sources=self.sources,
-                language=self.languages[0],
-                from_param=from_time,
-                page=self.page,
-                page_size=self.page_size)
-            
-            
-            # the json file where the output must be stored 
-            self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+            for i in range(len(self.companies)):
+                company = str(self.companies[i])
+                # /v2/ All articles published some time ago of company
+                raw_data = self.newsapi.get_everything(
+                    q=company,
+                    sources=self.sources,
+                    language=self.languages[0],
+                    from_param=from_time,
+                    page=self.page,
+                    page_size=self.page_size)
+
+                #raw_data['articles'] contains a list of articles
+                #thus for loop to iterate through each of the article
+                for article in raw_data['articles']:
+                    #upload each article's bytes representation to bucket in a blob
+                    blob.upload_from_string(json.dumps(article))
+                    #parse then insert in to the news table
+                    url=article['url']
+                    #map1 allows it to convert to the ticker given company name.
+                    ticker=map1[company]
+                    date=article['publishedAt']
+                    content=article['content']
+                    statement = """ INSERT INTO news(company_ticker, article_URL, article_content,date_published) VALUES (%s,%s,%s,%s)"""
+                    db_conn.execute(statement,(ticker,url,content,date))
+                    #sleep is needed, because it resulted in error 429 ratelimit exceeded
+                    #only 1 modification/second is allowed, thus sleep for 1 second
+                    #revisit if performance becomes an issue
+                    time.sleep(1)
+                # print(raw_data['articles'][0]['author'])
+                # the json file where the output must be stored
+                self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
 
         return
+
+
 
     # Helper func: save json/json
     def saveJson(self,raw_data,company,file_name_ending):
@@ -66,7 +97,7 @@ class NewsArticles(NewsApiClient):
         #Send json file to kafka (Currently commented out)
         out_file = open(home + out_filename) 
         response=json.load(out_file)
-        print(response)
+        #print(response)
         
         ## TODO: DEBUG with for spending to kafka
         #responseloads = loads(str(raw_data))
@@ -116,10 +147,6 @@ class NewsArticles(NewsApiClient):
 
 # Get articles
 if __name__=="__main__":
-    # Kafka definition
-    TOPIC_NAME = 'newsapi_data'
-    KAFKA_SERVER = 'localhost:9092' # TODO: check if right port for docker-compose.yml file
-    #producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
     newsArticles = NewsArticles(
         API_KEY_NEWSAPI, 
@@ -128,5 +155,7 @@ if __name__=="__main__":
         languages)
 
     newsArticles.get_everything()
+
+    #print(companies)
     
     

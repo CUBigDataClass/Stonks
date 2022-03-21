@@ -9,6 +9,7 @@ from datetime import date
 from datetime import timedelta
 import pandas as pd
 import os
+from google.cloud import storage
 from postGres import *
 from companies import *
 
@@ -39,6 +40,7 @@ class stocks:
         self.companies_info[ticker]['Sector'] = stock_info['sector']
         self.companies_info[ticker]['Exchange'] = stock_info['exchange']
         self.companies_info[ticker]['Website'] = stock_info['website']
+
         #there are cases where zip is not there, so set it as null if it doesn't exist
         #e.g. '0941.HK'
         """
@@ -51,13 +53,22 @@ class stocks:
 
     def get_top_companies_info(self):
         "Function that calls `get_company_info` for each top companies"
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
+        bucket_name = 'stonksbucket'
+        destination_blob_name = 'companies'
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(destination_blob_name)
+
         with self.pg.pool.connect() as db_conn:
             for ticker in self.pg.top_companies_tickers:
                 self.get_company_info(ticker)
                 print('{} Company Information Retrieved'.format(ticker))
 
-            self.company_info = pd.DataFrame.from_dict(self.companies_info, orient='index')
-            self.company_info.to_sql('company_information', con=db_conn, if_exists='replace')
+            self.companies_info = pd.DataFrame.from_dict(self.companies_info, orient='index')
+            #to_csv file is needed for converting dataframe to byte
+            blob.upload_from_string(self.companies_info.to_csv())
+            self.companies_info.to_sql('company_information', con=db_conn, if_exists='replace')
             query = """ALTER TABLE company_information ADD PRIMARY KEY ("Company_Symbol");"""
             db_conn.execute(query)
 
@@ -130,6 +141,13 @@ class stocks:
 
     def insert_all_historical_prices(self):
         """ Calls insert_all_historical_prices"""
+        #bucket configuration for stocks blob
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
+        bucket_name = 'stonksbucket'
+        destination_blob_name = 'stocks'
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(destination_blob_name)
 
         with self.pg.pool.connect() as db_conn:
             #deleting all before adding data to ensure 1 primary key
@@ -139,6 +157,8 @@ class stocks:
                 price_history = self.insert_historical_prices(ticker)
                 #print(price_history)
                 price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
+                #to_csv function is needed to change dataframe format in to bytes for bucket
+                blob.upload_from_string(price_history.to_csv())
                 print("{} Historical Data added".format(ticker))
 
 
@@ -161,10 +181,14 @@ class stocks:
         price_history['symbol'] = '{}'.format(ticker)
         price_history = price_history.drop(['Stock Splits'], axis=1)
         price_history['Date'] = pd.to_datetime(price_history['Date']).dt.strftime('%Y-%m-%dT%H:%M:%SZ')
-
         return price_history
 
     def insert_all_latest_stock_data(self):
+        bucket_name = 'stonksbucket'
+        destination_blob_name = 'stocks'
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(destination_blob_name)
         with self.pg.pool.connect() as db_conn:
             today = date.today()
             yesterday = today - timedelta(days = 1)
@@ -172,10 +196,11 @@ class stocks:
             for ticker in self.pg.top_companies_tickers:
                 price_history = self.insert_latest_stock_data(ticker, today,yesterday)
                 print("{} Latest Stock Data added".format(ticker))
-
-
                 price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
                 "Latest Stock Prices Inserted"
+                #insert in to bucket
+                blob.upload_from_string(price_history.to_csv())
+
     def delete_price_data(self):
         with self.pg.pool.connect() as db_conn:
             string1="DELETE from daily_prices"
@@ -196,6 +221,7 @@ class stocks:
             return prices_df
 
 #run this file every day
+#update daily, starting from the nxt day since initialization of db
 if __name__ == "__main__":
     #The credential path will be where the json file of secret keys is stored on your machine.
     #credential_path = "<File Path to where the json file of secret keys is stored in your local machine>"

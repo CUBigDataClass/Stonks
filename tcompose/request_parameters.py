@@ -1,3 +1,3 @@
 sources = 'bloomberg'
-companies = ['Microsoft']
+companies = ['microsoft']
 languages = ['en']

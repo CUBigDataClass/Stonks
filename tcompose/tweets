@@ -1,3 +1,4 @@
+# docker python image couldn't be used due to conflict with sqlalchemy.
 # Pulling ubuntu image with a specific tag from the docker hub.
 FROM ubuntu:20.04
 

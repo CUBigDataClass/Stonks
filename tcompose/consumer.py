@@ -11,6 +11,7 @@ import pandas as pd
 import os
 from postGres import *
 from companies import *
+
 # this is to import from file thats in different path
 import sys
 loc='../../credits'
@@ -44,39 +45,34 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS']='stonks-buckets.json'
 
 """
 
-#connect to gcp postgres
+#credential reference
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
-#for postgres
-pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
+
 #for bucket
 bucket_name = 'stonksbucket'
 destination_blob_name = 'twitter_stream'
 storage_client = storage.Client()
 bucket = storage_client.bucket(bucket_name)
 blob = bucket.blob(destination_blob_name)
-#create table for tweets if not exists
-#works fine but gotta convert time to date or do something idk
-with pg.pool.connect() as db_conn:
-    tweet = "CREATE TABLE IF NOT EXISTS tweets (tweet_ID SERIAL PRIMARY KEY, company_ticker varchar(255),tweet_URL varchar(255),tweet_content VARCHAR(255),date_published DATE, follower_count int)"
-    db_conn.execute(tweet)
 
+pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
+#currently every dataformat is in string
+with pg.pool.connect() as db_conn:
     for message in consumer:
         try:
             # get tweet as json
             tweet = dumps(message.value)
             # stream to the storage bucket
             blob.upload_from_string(tweet)
+            ticker=message[6]['ticker']
+            url=message[6]['entities']['urls']
+            content=message[6]['text']
+            date=message[6]['created_at']
+            followers=str(message[6]['user']['followers_count'])
+            #parse then upload to postgres tweets table
+            statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count) VALUES (%s,%s,%s,%s,%s)"""
+            db_conn.execute(statement, (ticker, url, content, date, followers))
 
-            #parse then upload
-            statement=(
-            """
-            INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published DATE, follower_count int)
-            VALUES({},{},{},{},{}).format(message[6]['ticker'],message[6]['entities']['urls'],message[6]['text'],message[6]['created_at'],str(message[6]['user']['followers_count'])
-            """)
-            db_conn.execute(statement)
-            #upload to postgresql
-            #insert in to table for tweets
-            #
         except Exception as e:
             print(e)
 
