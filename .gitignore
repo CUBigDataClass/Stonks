@@ -7,4 +7,18 @@
 # Jupyter Notebook Checkpoints
 *.ipynb_checkpoints
 
+
+**/.idea/
+.idea/
+
+*.idea/*
+.idea/
+**/.idea/
+
+
+__pycache__/
+
+# Jupyter Notebook Checkpoints
+*.ipynb_checkpoints
+
 *__pycache__/*

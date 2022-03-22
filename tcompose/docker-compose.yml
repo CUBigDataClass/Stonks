@@ -34,8 +34,8 @@ services:
       #ALLOW_PLAINTEXT_LISTENER=yes
     restart: unless-stopped
 
-  kafka-tweets:
-    container_name: kafka-tweets
+  tweets:
+    container_name: tweets
     build: 
       context: .
       dockerfile: tweets
@@ -50,7 +50,23 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 30
         # Run the client code 
-        python consumer.py & python tstream.py
+        python3 consumer.py & python3 tstream.py
+    restart: unless-stopped
+  news:
+    container_name: news
+    build:
+      context: .
+      dockerfile: news
+    networks:
+      - kafka_network
+    depends_on:
+      - kafka-1
+    entrypoint:
+      - bash
+      - -c
+      - |
+        # Run the client code 
+        cron && tail -f /var/log/cron.log
     restart: unless-stopped
 
 networks:

@@ -1,0 +1,8 @@
+# Build image and run container (if newsapi dockefile name Dockerfile)
+cd /path/to/Dockerfile
+docker build -t docker-cron:100 .
+docker run --name cron_container_newsapi --rm -i -t docker-cron:100 
+
+# New terminal (to view running container named: cron_container_newsapi)
+docker exec -it cron_container_newsapi bash
+ 

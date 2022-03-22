@@ -1,2 +1,3 @@
 #!/bin/bash
-/usr/bin/python3 /root/stockdata.py
+
+/usr/bin/python3 /root/dailystock.py

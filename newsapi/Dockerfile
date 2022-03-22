@@ -5,25 +5,19 @@ FROM ubuntu:20.04
 RUN touch /var/log/cron.log
 
 # Updating the packages and installing cron, python3-pip, newsapi
-RUN apt-get update 
-RUN apt-get -y upgrade
+RUN apt-get update
 RUN apt-get -y install cron
 RUN apt-get -y install python3-pip
 RUN python3 -m pip install newsapi-python
 RUN pip install yfinance --upgrade --no-cache-dir
 RUN pip install schedule
-RUN pip install requests 
-RUN pip install sqlalchemy
-RUN pip install cloud-sql-python-connector[pg8000]
-RUN pip install google-cloud-storage
-RUN pip install pandas
 
 # TODO: Which kafka is needed?
 RUN pip install kafka
 RUN pip install kafka-python
 
 # Copy python files to root directory
-COPY news.py /root/news.py 
+COPY all_articles_bloomberg.py /root/all_articles_bloomberg.py 
 COPY stockdata.py /root/stockdata.py 
 COPY keys.py /root/keys.py
 COPY last_request_date.py /root/last_request_date.py

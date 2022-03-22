@@ -101,3 +101,4 @@ TICKERS_COMPANIES_NAME = {
     'RIO': 'rio tinto',
     'TTE': 'totalenergies',
     'MPNGF': 'meituan'}
+
