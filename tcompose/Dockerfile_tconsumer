@@ -1,8 +1,0 @@
-# makes docker image for consumer
-FROM python:3.11.0a5-bullseye
-#ubuntu:20.04 As builder-image
-COPY / .
-#ADD tstream.py keys.py
-RUN pip install kafka-python tweepy requests sqlalchemy google-cloud-storage pg8000 cloud-sql-python-connector[pg8000] 
-
-CMD ["python", "consumer.py"]
