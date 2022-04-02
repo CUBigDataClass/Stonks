@@ -137,7 +137,8 @@ class GCP_PostGreSQL():
   
             for ticker in self.top_companies_tickers:
                 price_history = self.insert_historical_prices(ticker)
-                
+                print(price_history)
+
                 price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
                 
                 print("{} Historical Data added".format(ticker))  
@@ -172,6 +173,7 @@ class GCP_PostGreSQL():
             for ticker in self.top_companies_tickers:
                 price_history = self.insert_latest_stock_data(ticker, today,yesterday)
                 print("{} Latest Stock Data added".format(ticker))
+
                 
                 
                 price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)

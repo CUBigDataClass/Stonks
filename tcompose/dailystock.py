@@ -82,7 +82,7 @@ class stocks:
         ***IMPORTANT: This function is to be run only once to create the daily_prices table in the database and fill it with the historical stock prices of one company.
         Once the data is in the table, it does not to be updated since all of this is historical data.
         """
-        price_history = yf.Ticker('{}'.format(ticker)).history(period='5y', interval='1d')
+        price_history = yf.Ticker('{}'.format(ticker)).history(period='1y', interval='1d')
         #some formatting
         price_history = price_history.reset_index()
         price_history['symbol'] = '{}'.format(ticker)
@@ -130,7 +130,7 @@ class stocks:
         ***IMPORTANT: This function is to be run only once to insert all the historical stock data of all the companies.
         Once the data is inserted, that data is not to be updated.
         """
-        price_history = yf.Ticker('{}'.format(ticker)).history(period='5y', interval='1d')
+        price_history = yf.Ticker('{}'.format(ticker)).history(period='1y', interval='1d')
         price_history = price_history.fillna(0)
         #some formatting
         price_history = price_history.reset_index()
