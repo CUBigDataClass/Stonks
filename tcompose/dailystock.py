@@ -12,6 +12,7 @@ import os
 from google.cloud import storage
 from postGres import *
 from companies import *
+import json
 
 # this is to import from file thats in different path
 import sys
@@ -23,7 +24,6 @@ class stocks:
 
     def __init__(self,pg1):
         self.pg=pg1
-        self.companies_info={}
         #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '../../creds.json'
 
     #Function to get the information of Companies which will return a dictionary
@@ -34,13 +34,22 @@ class stocks:
         ***IMPORTANT: This function is to be run only once to get the information of all the companies in the Database. Once the information is stored in the database, it does not need to be updated.
         """
         stock_info = yf.Ticker('{}'.format(ticker)).info
+        company={}
+        company['Company_Symbol'] = stock_info['symbol']
+        company['Company_Name'] = stock_info['shortName']
+        company['Sector'] = stock_info['sector']
+        company['Exchange'] = stock_info['exchange']
+        company['Website'] = stock_info['website']
+        return company
+
+        """
         self.companies_info[ticker] = {}
         self.companies_info[ticker]['Company_Symbol'] = stock_info['symbol']
         self.companies_info[ticker]['Company Name'] = stock_info['shortName']
         self.companies_info[ticker]['Sector'] = stock_info['sector']
         self.companies_info[ticker]['Exchange'] = stock_info['exchange']
         self.companies_info[ticker]['Website'] = stock_info['website']
-
+        """
         #there are cases where zip is not there, so set it as null if it doesn't exist
         #e.g. '0941.HK'
         """
@@ -62,18 +71,27 @@ class stocks:
 
         with self.pg.pool.connect() as db_conn:
             for ticker in self.pg.top_companies_tickers:
-                self.get_company_info(ticker)
-                print('{} Company Information Retrieved'.format(ticker))
+                info=self.get_company_info(ticker)
+                #print('{} Company Information Retrieved'.format(ticker))
+                #print(info)
+                symbol=info['Company_Symbol']
+                name=info['Company_Name']
+                sector=info['Sector']
+                exchange=info['Exchange']
+                website=info['Website']
+                #print(symbol,name,sector,exchange,website)
+                statement = """ INSERT INTO companies(company_ticker, company_name, sector, exchange, website) VALUES (%s,%s,%s,%s,%s)"""
+                db_conn.execute(statement, (symbol,name,sector,exchange,website))
+                blob.upload_from_string(json.dumps(info))
 
-            self.companies_info = pd.DataFrame.from_dict(self.companies_info, orient='index')
             #to_csv file is needed for converting dataframe to byte
-            blob.upload_from_string(self.companies_info.to_csv())
-            self.companies_info.to_sql('company_information', con=db_conn, if_exists='replace')
-            query = """ALTER TABLE company_information ADD PRIMARY KEY ("Company_Symbol");"""
-            db_conn.execute(query)
-
+            #self.companies_info.to_sql('company_information', con=db_conn, if_exists='replace')
+            #query = """ALTER TABLE company_information ADD PRIMARY KEY ("Company_Symbol");"""
+            #db_conn.execute(query)
+    """
+    #deprecated. Chose to create a table and insert due to error
     def create_prices_table(self,ticker):
-        """
+        """"""
         Create a daily prices table in the database.
         This function essentially takes in a company symbol as the input, generates a price_history dataframe and then builds a table of daily prices
         using that dataframe.
@@ -81,7 +99,7 @@ class stocks:
         A Query is also being run which makes the company symbol and date as the primary keys.
         ***IMPORTANT: This function is to be run only once to create the daily_prices table in the database and fill it with the historical stock prices of one company.
         Once the data is in the table, it does not to be updated since all of this is historical data.
-        """
+        """"""
         price_history = yf.Ticker('{}'.format(ticker)).history(period='1y', interval='1d')
         #some formatting
         price_history = price_history.reset_index()
@@ -92,19 +110,23 @@ class stocks:
 
         ###############################################################
         ### Init db for prices and get history
+    """
+    """
+    #deprecated. Chose to create a table and insert due to error
     def create_all_prices_table(self):
-        """ Call create_prices_table for all top companies.
-        Run one time only.
-        """
+        #Call create_prices_table for all top companies.
+        #Run one time only.
+        
         #print("Creating all prices table")
         with self.pg.pool.connect() as db_conn:
             for ticker in self.pg.top_companies_tickers:
                 price_history = self.create_prices_table(ticker)
                 price_history.to_sql('daily_prices', con=db_conn, if_exists='replace', index=False)
                 # creating company symbol as the primary key
-                query = """ALTER TABLE daily_prices ADD PRIMARY KEY ("symbol","Date");"""
+                query = """"""ALTER TABLE daily_prices ADD PRIMARY KEY ("symbol","Date");""""""
                 db_conn.execute(query)
                 print('Daily prices table created')
+    """
 
     ###############################################################
     # Querying func?
@@ -151,14 +173,32 @@ class stocks:
 
         with self.pg.pool.connect() as db_conn:
             #deleting all before adding data to ensure 1 primary key
-            self.delete_price_data()
+            #self.delete_price_data()
             #Adding historical prices of 8 companies.
             for ticker in self.pg.top_companies_tickers:
                 price_history = self.insert_historical_prices(ticker)
-                #print(price_history)
-                price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
+                size=price_history.shape[0]
+                for rows in range(size):
+                    row=price_history.loc[rows]
+                    date=row['Date']
+                    date=date[:10]+" "+date[11:19]
+                    open=row['Open']
+                    high=row['High']
+                    low=row['Low']
+                    close=row['Close']
+                    volume=row['Volume']
+                    dividends=row['Dividends']
+                    symbol=row['symbol']
+                    #print(symbol,date,open,high,low,close,volume,dividends)
+                    #print(type(date))
+
+                    statement = """ INSERT INTO stocks(date, company_ticker, open, high, low, close, volume, dividends) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+                    db_conn.execute(statement, (date,symbol,open,high,low,close,volume,dividends))
+
+                #print(price_history.shape[0])
+                #price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
                 #to_csv function is needed to change dataframe format in to bytes for bucket
-                blob.upload_from_string(price_history.to_csv())
+                #blob.upload_from_string(price_history.to_csv())
                 print("{} Historical Data added".format(ticker))
 
 
@@ -195,11 +235,29 @@ class stocks:
 
             for ticker in self.pg.top_companies_tickers:
                 price_history = self.insert_latest_stock_data(ticker, today,yesterday)
+                #print(price_history)
+                row=price_history.loc[0]
+                curr_date = row['Date']
+                curr_date = curr_date[:10] + " " + curr_date[11:19]
+                open = row['Open']
+                high = row['High']
+                low = row['Low']
+                close = row['Close']
+                volume = row['Volume']
+                dividends = row['Dividends']
+                symbol = row['symbol']
+                #print(symbol,curr_date,open,high,low,close,volume,dividends)
+                #print(price_history.loc[0]['Date'])
+                # print(type(date))
+
+                statement = """ INSERT INTO stocks(date, company_ticker, open, high, low, close, volume, dividends) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+                db_conn.execute(statement, (curr_date, symbol, open, high, low, close, volume, dividends))
                 print("{} Latest Stock Data added".format(ticker))
-                price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
+                #price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
                 "Latest Stock Prices Inserted"
                 #insert in to bucket
-                blob.upload_from_string(price_history.to_csv())
+                #blob.upload_from_string(price_history.to_csv())
+            #print(price_history)
 
     def delete_price_data(self):
         with self.pg.pool.connect() as db_conn:

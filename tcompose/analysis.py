@@ -28,16 +28,19 @@ if __name__ == "__main__":
     #st.query_daily_prices()
     with pg.pool.connect() as db_conn:
         #result = db_conn.execute("select * from tweets")
-        #result = db_conn.execute("select date_published from news")
+        #result = db_conn.execute("select * from news WHERE company_ticker='MPNGF")
         #result = db_conn.execute("""select * from news where date_published BETWEEN '2016-06-22 19:10:25' AND '2022-01-01 01:01:01'""")
-        #result = db_conn.execute("select 'daily_prices.Low' From daily_prices")
-        #result = db_conn.execute("select 'Company_Symbol' from company_information")
-        #statement= "select * from daily_prices"
+        #result = db_conn.execute("select company_ticker from companies")
+        result= db_conn.execute("select * from stocks WHERE company_ticker='AMGN' AND date BETWEEN '2015-01-01 00:00:00' AND '2022-01-01 00:00:00'")
+        #statement= "select * from stocks"
+        val=0
         for row in result:
             print(row)
+            val+=1
         #df=pd.read_sql(statement,con=db_conn)
         #df=df[df['symbol']=='AAPL']
         #print(df)
-        #print (result.keys())
+        print (result.keys())
         #print(result)
+        print(val)
 

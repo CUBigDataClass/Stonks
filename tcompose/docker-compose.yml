@@ -52,6 +52,7 @@ services:
         # Run the client code 
         python3 consumer.py & python3 tstream.py
     restart: unless-stopped
+
   news:
     container_name: news
     build:

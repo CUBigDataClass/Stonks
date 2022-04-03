@@ -42,7 +42,6 @@ class NewsArticles(NewsApiClient):
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
 
-
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
             for company in self.companies:
