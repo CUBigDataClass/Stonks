@@ -18,10 +18,6 @@ RUN pip install cloud-sql-python-connector[pg8000]
 RUN pip install google-cloud-storage
 RUN pip install pandas
 
-# TODO: Which kafka is needed?
-RUN pip install kafka
-RUN pip install kafka-python
-
 # Copy python files to root directory
 COPY news.py /root/news.py 
 COPY stockdata.py /root/stockdata.py 

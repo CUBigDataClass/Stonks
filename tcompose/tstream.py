@@ -2,9 +2,10 @@
 from tweepy import Stream
 import json
 from keys import *
-#from companies import *
+from companies import *
 from kafka import KafkaProducer
 import sys
+
 
 
 

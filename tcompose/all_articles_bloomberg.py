@@ -42,7 +42,6 @@ class NewsArticles(NewsApiClient):
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
 
-
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
             for company in self.companies:
@@ -64,15 +63,29 @@ class NewsArticles(NewsApiClient):
                     #upload each article's bytes representation to bucket in a blob
                     blob.upload_from_string(json.dumps(article))
                     #parse then insert in to the news table
-                    url=article['url']
 
                     #map1 allows it to convert to the ticker given company name.
                     ticker=map1[company]
-
+                    title = article['title']
+                    author = article['author']
+                    url = article['url']
+                    urlimage = article['urlToImage']
+                    description = article['description']
                     date=article['publishedAt']
-                    content=article['content']
-                    statement = """ INSERT INTO news(company_ticker, article_URL, article_content,date_published) VALUES (%s,%s,%s,%s)"""
-                    db_conn.execute(statement,(ticker,url,content,date))
+
+                    """
+                    print(ticker)
+                    print(title)
+                    print(author)
+                    print(url)
+                    print(urlimage)
+                    print(description)
+                    print(date)
+                    """
+
+                    #print(article)
+                    statement = """ INSERT INTO news(company_ticker, title, author, article_URL, url_image, article_description, date_published) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+                    db_conn.execute(statement,(ticker,title,author,url,urlimage,description,date))
                     #sleep is needed, because it resulted in error 429 ratelimit exceeded
                     #only 1 modification/second is allowed, thus sleep for 1 second
                     #revisit if performance becomes an issue
