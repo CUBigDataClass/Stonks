@@ -4,6 +4,7 @@ from kafka import KafkaConsumer
 from google.cloud.sql.connector import connector
 import pg8000.native
 import sqlalchemy
+from sentiment import *
 
 def getconn() -> pg8000.native.Connection:
     """
@@ -17,6 +18,7 @@ def getconn() -> pg8000.native.Connection:
         db="stonks"
     )
     return conn
+
 
 # kafka configuration
 TOPIC_NAME = 'stock_data'
@@ -47,7 +49,9 @@ with pool.connect() as db_conn:
         blob.upload_from_string(tweet)
 
         # get sentiment score for the tweet
-        # DO SENTIMENT ANALYSIS HERE
+        tweet_sentiment = SentimentAnalyzer(tweet['text'])
+        tweet_sentiment.run_sentiment_analysis()
+        sentiment_scores = ???
 
         # insert into postgres db
         # INSERT STATEMENT GOES HERE
