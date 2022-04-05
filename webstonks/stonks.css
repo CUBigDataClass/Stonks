@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;1,400&display=swap");
+
+body {
+  background-color: #211F20;
+}
+img {
+  width: 80%;
+  max-width: 450px;
+}
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 6vw;
+  color: rgb(254, 254, 254);
+}
+h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 3vw;
+  color: white;
+  text-align: center;
+}
+#project-journal {
+  width: 100%;
+  max-width: 400px;
+}
+#container {
+  width: 90%; /*The container will try to fill 90% of browser width*/
+  margin: 0px auto; /*This line of code is the key.  0px margin top and bottom, auto margin left and right to center*/
+  padding: 0px;
+  box-sizing: border-box; /*Makes it so that padding does not add to a box's total width*/
+
+  display: flex; /*changes the container into a flex box*/
+  flex-wrap: wrap; /*wrap, nowrap, wrap-reverse*/
+  flex-direction: row; /*row, row-reverse, column, column-reverse*/
+  align-content: flex-start; /*flex-start, flex-end, center, stretch, space-between, space around*/
+  align-items: stretch; /*flex-end, center, stretch, baseline*/
+}
+#container-labs {
+  width: 85%; /*The container will try to fill 85% of width*/
+  margin: 0px auto; /*This line of code is the key.  0px margin top and bottom, auto margin left and right to center*/
+  padding: 0px;
+  box-sizing: border-box; /*Makes it so that padding does not add to a box's total width*/
+
+  display: flex; /*changes the container into a flex box*/
+  flex-wrap: wrap; /*wrap, nowrap, wrap-reverse*/
+  flex-direction: row; /*row, row-reverse, column, column-reverse*/
+  align-content: flex-start; /*flex-start, flex-end, center, stretch, space-between, space around*/
+  align-items: stretch; /*flex-end, center, stretch, baseline*/
+}
+#project-header {
+  float: right;
+  font-family: 'Playfair Display', serif;
+  font-size: 3vw;
+  color: white;
+  text-align: right;
+  padding: 1vw;
+}
+.special-image {
+  width: 80%;
+  margin: 0;
+}
+
+.right {
+  float: right;
+}
+.fullwidth {
+  background-color: #fcdccf;
+  margin: 2%;
+  width: 98%;
+  padding: 2%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.halfbox {
+  background-color: #fcdccf;
+  margin: 2%;
+  width: 46%;
+  padding: 2%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.halfbox-projecttext {
+  background-color: #fcdccf;
+  /* background-color: #FFFCED; */
+  margin: 2%;
+  width: 46%;
+  padding: 1%;
+  padding-right: 1.5%;
+  box-sizing: border-box;
+  text-align: right;
+  float: right;
+}
+.labs-paragraphs {
+  font-family: 'Playfair Display', serif;
+  font-size: 2vw;
+  color: rgb(57, 58, 59);
+  text-align: center;
+}
+.lab-description {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5vw;
+  color: white;
+  text-align: left;
+}
+.homepage-paragraphs {
+  font-family: "Poppins", sans-serif;;
+  font-size: 2.5vw;
+  color: white;
+  padding-top: 20px;
+}
+.projects-paragraphs {
+  font-family: "Poppins", sans-serif;;
+  font-size: 1.8vw;
+  color: white;
+  text-align: right;
+  float: right;
+  padding: 1vw;
+}
+.center {
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 100px;
+}
+.center-footer {
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 20px;
+}
+.navbar {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+  /* background-color: #FCDCCF; */
+  background-color: #4EA261;
+  overflow: hidden;
+  z-index: 9999;
+}
+.navbar a:hover {
+  color:#4EA261;
+  overflow: hidden;
+}
+.text {
+  padding: 0 20px 20px;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: #393d40;
+  letter-spacing: 2.5px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #deaa4e;
+  font-weight: 400;
+}
+.thirdbox {
+  background-color: #414040;
+  margin: 2%;
+  width: 29.33333333%;
+  padding: 2%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.thirdbox-labs {
+  background-color: #4EA261;
+  margin: 2%;
+  width: 29.33333333%;
+  padding: 2%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.twothirdbox {
+  background-color: #414040;
+  margin: 2%;
+  width: 58.6666666%;
+  padding: 2%;
+  box-sizing: border-box;
+  text-align: center;
+}
+@media screen and (max-width: 320px) {
+  /* comes into effect for screens less than or equal to 320 pixels */
+  #somethingorother {
+    width: 120px;
+  }
+}
+@media screen and (min-width: 321px) and (max-width: 480px) {
+  /* comes into effect for screens between 321 and 480 pixels (inclusive) */
+  #somethingorother {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 481px) {
+  /* comes into effect for screens larger than or equal to 481 pixels */
+  #somethingorother {
+    width: 480px;
+  }
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@media screen and (min-width: 601px) {
+  div.example {
+    font-size: 80px;
+  }
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 600px) {
+  div.example {
+    font-size: 30px;
+  }
+}
