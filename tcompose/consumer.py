@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from json import loads, dumps
 from google.cloud import storage
-
 from kafka import KafkaConsumer
 from google.cloud.sql.connector import connector
 import pg8000.native
@@ -56,6 +55,7 @@ storage_client = storage.Client()
 bucket = storage_client.bucket(bucket_name)
 blob = bucket.blob(destination_blob_name)
 
+<<<<<<< HEAD
 pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
 #currently every dataformat is in string
 with pg.pool.connect() as db_conn:
@@ -75,6 +75,22 @@ with pg.pool.connect() as db_conn:
             #parse then upload to postgres tweets table
             statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count, sentiment) VALUES (%s,%s,%s,%s,%s,%f)"""
             db_conn.execute(statement, (ticker, url, content, date, followers,sentiment))
+=======
+"""
+# get pooled connection to cloud postgres instance
+pool = sqlalchemy.create_engine(
+    "postgresql+pg8000://",
+    creator=getconn,
+)
+"""
+"""
+print("bah")
+# upload data from the stream to the bucket and postgres
+for message in consumer:
+    print(message)
+
+"""
+>>>>>>> 6d41000 (Revert "Merge branch 'newsapiDockerCompose_gh'")
 
         except Exception as e:
             print(e)
