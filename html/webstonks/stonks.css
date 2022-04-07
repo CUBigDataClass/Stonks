@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;&family=Playfair+Display;1,400&display=swap");
 
 body {
   background-color: #211F20;
@@ -8,12 +8,12 @@ img {
   max-width: 450px;
 }
 h1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Playfair Display", serif;
   font-size: 6vw;
   color: rgb(254, 254, 254);
 }
 h2 {
-  font-family: "Poppins", sans-serif;
+  font-family:"Playfair Display", serif;
   font-size: 3vw;
   color: white;
   text-align: center;
