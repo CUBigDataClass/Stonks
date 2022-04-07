@@ -1,10 +1,12 @@
 <html>
     <body>
-        {% if company_name %}
-        <h1>Hello company: [{{ company_name }}] from company.html</h1>
-        {% else %}
-        <h1>Hello company: [DEFAULT] from company.html</h1>
-        {% endif %}
+        <h1>{{ company_name }} </h1>
+            <h2> Daily info</h2>
+            <ul>Opening
+                {% for stock in stocks %}
+                <li> {{stock.open}}:  </li>
+                {% endfor%}
+            </ul>
 
     </body>
 
