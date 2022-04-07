@@ -42,8 +42,8 @@ def getCompanyData(request):
     query_set = Stocks.objects.filter(pk=company_ticker).filter(date__range=(from_date,to_date))
     displayDict['stocks'] = list(query_set)
     
-    query_set = News.objects.filter(pk=company_ticker).filter(date_published__range=(from_date,to_date))
-    displayDict['news'] = list()
+    # query_set = News.objects.filter(pk=company_ticker).filter(date_published__range=(from_date,to_date))
+    # displayDict['news'] = list()
 
     ##@todo: how to get DAILY sentiment (not individual tweets)    
     # query_set = Tweets.objects.filter(company_ticker__contains=company_ticker).filter(date_published__range=(from_date,to_date))

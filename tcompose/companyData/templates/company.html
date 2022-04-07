@@ -2,9 +2,12 @@
     <body>
         <h1>{{ company_name }} </h1>
             <h2> Daily info</h2>
-            <ul>Opening
+            <ul>
                 {% for stock in stocks %}
                 <li> {{stock.open}}:  </li>
+                <li> {{stock.close}} </li>
+                {% comment %} <li> {{stock.low}} </li>
+                <li> {{stock.high}} </li> {% endcomment %}
                 {% endfor%}
             </ul>
 
