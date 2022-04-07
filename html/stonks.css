@@ -18,6 +18,12 @@ h2 {
   color: white;
   text-align: center;
 }
+h3{
+  font-family:"Playfair Display", serif;
+  font-size: 3vw;
+  text-align: center;
+  color:greenyellow;
+}
 #project-journal {
   width: 100%;
   max-width: 400px;
@@ -133,8 +139,7 @@ h2 {
 }
 .navbar {
   animation: 1s ease-out 0s 1 slideInFromLeft;
-  /* background-color: #FCDCCF; */
-  background-color: #4EA261;
+  background-color: #3DCB44;
   overflow: hidden;
   z-index: 9999;
 }
@@ -156,7 +161,7 @@ a {
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-style: normal;
-  color: #393d40;
+  color: #3B5F3D;
   letter-spacing: 2.5px;
   font-size: 20px;
   text-decoration: none;
