@@ -77,8 +77,8 @@ with pg.pool.connect() as db_conn:
                 # sentiment_class = 'neutral'
                 sentiment_class = 0
             #parse then upload to postgres tweets table
-            statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count, sentiment) VALUES (%s,%s,%s,%s,%s,%d)"""
-            db_conn.execute(statement, (ticker, url, content, date, followers,sentiment_class))
+            statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count, compound_score, sentiment) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+            db_conn.execute(statement, (ticker, url, content, date, followers,compound_sentiment,sentiment_class))
 
         except Exception as e:
             print(e)
