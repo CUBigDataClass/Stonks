@@ -13,6 +13,10 @@ RUN pip install cloud-sql-python-connector[pg8000]
 RUN pip install google-cloud-storage
 RUN pip install pandas
 RUN pip install nltk
+RUN python3 -m nltk.downloader stopwords
+RUN python3 -m nltk.downloader wordnet
+RUN python3 -m nltk.downloader vader_lexicon
+
 
 # Copy python files to root directory
 COPY / . 

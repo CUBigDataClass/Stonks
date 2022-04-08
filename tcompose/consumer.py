@@ -67,14 +67,14 @@ with pg.pool.connect() as db_conn:
             sentiment_scores = tweet_sentiment.get_sentiment_score()
             # discretize compound sentiment score
             compound_sentiment = sentiment_scores['compound']
-            if compound_sentiment > .05:
-                #sentiment_class = 'positive'
+            if compound_sentiment > 0:
+                # sentiment_class = 'positive'
                 sentiment_class = 1
-            elif compound_sentiment < -.05:
-                #sentiment_class = 'negative'
+            elif compound_sentiment < 0:
+                # sentiment_class = 'negative'
                 sentiment_class = -1
             else:
-                #sentiment_class = 'neutral'
+                # sentiment_class = 'neutral'
                 sentiment_class = 0
             #parse then upload to postgres tweets table
             statement = """ INSERT INTO tweets(company_ticker ,tweet_URL,tweet_content,date_published, follower_count, sentiment) VALUES (%s,%s,%s,%s,%s,%d)"""
