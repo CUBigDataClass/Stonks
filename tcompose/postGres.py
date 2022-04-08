@@ -1,7 +1,7 @@
 from request_parameters import *
 #from db_keys import *
 # from keys import *
-from google.cloud.sql.connector import connector
+from google.cloud.sql.connector import Connector
 import pg8000.native
 import sqlalchemy
 from datetime import date
@@ -27,6 +27,7 @@ class GCP_PostGreSQL():
     ###############################################################
     #getconn function will have the parameters of your GCP's postgresql instance.
     def getconn(self) -> pg8000.native.Connection:
+        connector=Connector()
         conn: pg8000.native.Connection = connector.connect(
             self.connectionName,
             "pg8000",

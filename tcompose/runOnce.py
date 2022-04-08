@@ -25,9 +25,10 @@ st=stocks(pg)
 #for bucket
 
 #print(st.get_prices_df_query())
-"""
+
 with pg.pool.connect() as db_conn:
     # drop table to avoid making two tables
+
     command="DROP TABLE IF EXISTS companies"
     db_conn.execute(command)
     command="DROP TABLE IF EXISTS tweets"
@@ -40,21 +41,20 @@ with pg.pool.connect() as db_conn:
     db_conn.execute(company)
     stocks = "CREATE TABLE IF NOT EXISTS stocks (date timestamp, company_ticker varchar(255),open numeric,high numeric,low numeric, close numeric, volume numeric, dividends numeric, PRIMARY KEY(company_ticker,date))"
     db_conn.execute(stocks)
-    tweet = "CREATE TABLE IF NOT EXISTS tweets (tweet_ID SERIAL PRIMARY KEY, company_ticker varchar(255),tweet_URL varchar(255),tweet_content VARCHAR(300),date_published timestamp, follower_count int, sentiment float)"
+    tweet = "CREATE TABLE IF NOT EXISTS tweets (tweet_ID SERIAL PRIMARY KEY, company_ticker varchar(255),tweet_URL text[],tweet_content VARCHAR(5000),date_published timestamp, follower_count int, compound_score float, sentiment int)"
     db_conn.execute(tweet)
     news = "CREATE TABLE IF NOT EXISTS news (article_id SERIAL PRIMARY KEY, company_ticker varchar(255), title varchar(255), author varchar(255), article_URL VARCHAR(255), url_image VARCHAR(255),article_description VARCHAR(10000), date_published timestamp)"
     db_conn.execute(news)
-"""
+
 #populates companies table in postgres and companies blob in bucket
-#st.get_top_companies_info()
+st.get_top_companies_info()
 #create prices table
 #input all the historical prices
-#st.create_all_prices_table()
-#st.insert_all_historical_prices()
+st.insert_all_historical_prices()
 #st.insert_all_latest_stock_data()
 #st.get_top_companies_info()
 #st.insert_all_historical_prices()
-newsArticles = NewsArticles(API_KEY_NEWSAPI,top100,SOURCES,LANGUAGES)
-newsArticles.get_everything()
+#newsArticles = NewsArticles(API_KEY_NEWSAPI,top100,SOURCES,LANGUAGES)
+#newsArticles.get_everything()
 
 
