@@ -20,23 +20,6 @@ loc='../../credits'
 sys.path.append(loc)
 from db_keys import *
 
-"""
-def getconn() -> pg8000.native.Connection:
-"""
-"""
-    :return: Connection to the 'stonks' db on the GCP Postgres instance
-"""
-"""
-    conn: pg8000.native.Connection = connector.connect(
-        "stonks-343022:us-central1:stock-stack",
-        "pg8000",
-        user="postgres",
-        password="darpatliznikjuschi",
-        db="stonks"
-    )
-    return conn
-"""
-
 # kafka configuration
 TOPIC_NAME = 'tweet'
 KAFKA_SERVER = 'kafka-1:9092'
