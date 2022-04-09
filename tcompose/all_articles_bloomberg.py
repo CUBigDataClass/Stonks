@@ -32,7 +32,7 @@ class NewsArticles(NewsApiClient):
     #currently O(n^2) time complexity, could optimize
     #maybe use dict
     def get_everything(self):
-        from_time = self.get_from_time()
+        
         #initializing connection
         pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
@@ -45,6 +45,10 @@ class NewsArticles(NewsApiClient):
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
             for company in self.companies:
+                # ticker name
+                ticker=map1[company]
+                from_time = self.get_from_time(ticker)
+                
                 #company = str(self.companies[i])
                 # /v2/ All articles published some time ago of company
                 raw_data = self.newsapi.get_everything(
@@ -144,7 +148,7 @@ class NewsArticles(NewsApiClient):
         return articles
 
         # Helper func: Get previous time parameters
-    def get_from_time(self):
+    def get_from_time(self,ticker):
         
         # Default to initalized value
         now = datetime.now()
@@ -154,7 +158,7 @@ class NewsArticles(NewsApiClient):
         #month = datetime.timedelta(weeks=4)
         
         # First request
-        if last_request_date_NEWSAPI is None:
+        if last_request_date_NEWSAPI[ticker] is None:
             return None
         
         #previous_timestamp = datetime.datetime.fromtimestamp(last_request_date_NEWSAPI)
