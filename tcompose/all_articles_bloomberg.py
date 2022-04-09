@@ -1,7 +1,6 @@
 from newsapi import NewsApiClient
 from request_parameters import * 
 from keys import *
-from last_request_date import *
 import os
 from google.cloud import storage
 from datetime import datetime, timedelta
@@ -11,7 +10,7 @@ from db_keys import *
 from postGres import *
 from json import dumps
 from json import loads
-from kafka import KafkaProducer
+# from kafka import KafkaProducer
 import requests
 import schedule
 import json
@@ -111,8 +110,8 @@ class NewsArticles(NewsApiClient):
         home = str(Path.home())+'/' # `/root/` for docker containers
         
         # Save as json file        
-        company_no_space = str(company_no_space.replace(" ", "")) # Remove space in company name (for filename)
-        out_filename = company + file_name_ending
+        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
+        out_filename = company_no_space + file_name_ending
         out_file = open(home + out_filename, "w")  
         json.dump(raw_data, out_file, indent = 6) 
         out_file.close() 
@@ -131,13 +130,32 @@ class NewsArticles(NewsApiClient):
         
         #######################################################################
         # Update request timestamp
-        out_filename = 'last_request_date.py'
-        out_file = open(home + out_filename, "w")  
+        filename = 'last_request_date.json'
+        last_request_date = self.get_last_request_date(filename)
+        last_request_date[ticker]=time.time()        
+        self.save_last_request_date(last_request_date,filename)
         
-        ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
-        out_file.write("%s = %f\n" %("last_request_date_NEWSAPI["+ticker+"]", time.time()))
-        out_file.close()
+    def get_filepath(self, filename, root=None):
+        if root == None:
+            root = os.path.dirname(__file__)
+        filepath = os.path.join(root,filename)
+        
+        return filepath
 
+    def get_last_request_date(self,filename,root=None):
+        filepath = self.get_filepath(filename,root=root)
+        
+        with open(filepath, 'r') as f:
+            last_request_date = json.load(f)
+        return last_request_date
+    
+    def save_last_request_date(self, last_request_date,filename, root=None):
+        filepath = self.get_filepath(filename,root=root)
+        
+        with open(filepath, 'w') as f:
+            json.dump(last_request_date, f)       
+        
+        
     # Helper func: add unique company identifier
     def addCompanyUniqueField(self, raw_data, companyName='', companyTicker=''):
         articles = raw_data["articles"]
@@ -158,11 +176,13 @@ class NewsArticles(NewsApiClient):
         #month = datetime.timedelta(weeks=4)
         
         # First request
-        if last_request_date_NEWSAPI[ticker] is None:
+        filename = 'last_request_date.json'
+        last_request_date = self.get_last_request_date(filename)
+        if last_request_date[ticker] == 'None':
             return None
         
         #previous_timestamp = datetime.datetime.fromtimestamp(last_request_date_NEWSAPI)
-        previous_timestamp=datetime.fromtimestamp(last_request_date_NEWSAPI[ticker])
+        previous_timestamp=datetime.fromtimestamp(last_request_date[ticker])
         days_delta = now - previous_timestamp
         
         # more than than 1 month ago/4 weeks
@@ -194,7 +214,8 @@ if __name__=="__main__":
             SOURCES,
             LANGUAGES)
 
-    newsArticles.get_everything()
+    print(__file__)
+    # newsArticles.get_everything()
 
     #print(companies)
     
