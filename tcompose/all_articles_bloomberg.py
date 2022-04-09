@@ -92,14 +92,14 @@ class NewsArticles(NewsApiClient):
                     time.sleep(1)
                 # print(raw_data['articles'][0]['author'])
                 # the json file where the output must be stored
-                self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+                self.saveJson(raw_data, ticker=ticker,company=company,file_name_ending="_all_articles.json", )
 
         return
 
 
 
     # Helper func: save json/json
-    def saveJson(self,raw_data,company,file_name_ending):
+    def saveJson(self,raw_data,ticker,company,file_name_ending):
         # TODO: How to save when (time) query was made
         # TODO: Change hard code folder
 
@@ -107,8 +107,8 @@ class NewsArticles(NewsApiClient):
         home = str(Path.home())+'/' # `/root/` for docker containers
         
         # Save as json file        
-        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
-        out_filename = company_no_space + file_name_ending
+        company_no_space = str(company_no_space.replace(" ", "")) # Remove space in company name (for filename)
+        out_filename = company + file_name_ending
         out_file = open(home + out_filename, "w")  
         json.dump(raw_data, out_file, indent = 6) 
         out_file.close() 
@@ -131,7 +131,7 @@ class NewsArticles(NewsApiClient):
         out_file = open(home + out_filename, "w")  
         
         ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
-        out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
+        out_file.write("%s = %f\n" %("last_request_date_NEWSAPI["+ticker+"]", time.time()))
         out_file.close()
 
     # Helper func: add unique company identifier
