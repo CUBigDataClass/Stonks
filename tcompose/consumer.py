@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from json import loads, dumps
 from google.cloud import storage
-
 from kafka import KafkaConsumer
 from google.cloud.sql.connector import connector
 import pg8000.native
