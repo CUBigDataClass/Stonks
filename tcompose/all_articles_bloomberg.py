@@ -162,7 +162,7 @@ class NewsArticles(NewsApiClient):
             return None
         
         #previous_timestamp = datetime.datetime.fromtimestamp(last_request_date_NEWSAPI)
-        previous_timestamp=datetime.fromtimestamp(last_request_date_NEWSAPI)
+        previous_timestamp=datetime.fromtimestamp(last_request_date_NEWSAPI[ticker])
         days_delta = now - previous_timestamp
         
         # more than than 1 month ago/4 weeks
