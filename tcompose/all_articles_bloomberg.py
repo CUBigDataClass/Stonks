@@ -10,7 +10,7 @@ from db_keys import *
 from postGres import *
 from json import dumps
 from json import loads
-# from kafka import KafkaProducer
+from kafka import KafkaProducer
 import requests
 import schedule
 import json
@@ -214,8 +214,7 @@ if __name__=="__main__":
             SOURCES,
             LANGUAGES)
 
-    print(__file__)
-    # newsArticles.get_everything()
+    newsArticles.get_everything()
 
     #print(companies)
     
