@@ -72,6 +72,6 @@ services:
 
 networks:
     kafka_network:
-      name: kafka_networkk
+      name: kafka_network
     
   
