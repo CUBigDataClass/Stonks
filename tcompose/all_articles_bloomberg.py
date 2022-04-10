@@ -1,7 +1,6 @@
 from newsapi import NewsApiClient
 from request_parameters import * 
 from keys import *
-from last_request_date import *
 import os
 from google.cloud import storage
 from datetime import datetime, timedelta
@@ -32,7 +31,7 @@ class NewsArticles(NewsApiClient):
     #currently O(n^2) time complexity, could optimize
     #maybe use dict
     def get_everything(self):
-        from_time = self.get_from_time()
+        
         #initializing connection
         pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
@@ -45,6 +44,10 @@ class NewsArticles(NewsApiClient):
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
             for company in self.companies:
+                # ticker name
+                ticker=map1[company]
+                from_time = self.get_from_time(ticker)
+                
                 #company = str(self.companies[i])
                 # /v2/ All articles published some time ago of company
                 raw_data = self.newsapi.get_everything(
@@ -92,14 +95,14 @@ class NewsArticles(NewsApiClient):
                     time.sleep(1)
                 # print(raw_data['articles'][0]['author'])
                 # the json file where the output must be stored
-                self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+                self.saveJson(raw_data, ticker=ticker,company=company,file_name_ending="_all_articles.json", )
 
         return
 
 
 
     # Helper func: save json/json
-    def saveJson(self,raw_data,company,file_name_ending):
+    def saveJson(self,raw_data,ticker,company,file_name_ending):
         # TODO: How to save when (time) query was made
         # TODO: Change hard code folder
 
@@ -127,13 +130,32 @@ class NewsArticles(NewsApiClient):
         
         #######################################################################
         # Update request timestamp
-        out_filename = 'last_request_date.py'
-        out_file = open(home + out_filename, "w")  
+        filename = 'last_request_date.json'
+        last_request_date = self.get_last_request_date(filename)
+        last_request_date[ticker]=time.time()        
+        self.save_last_request_date(last_request_date,filename)
         
-        ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
-        out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
-        out_file.close()
+    def get_filepath(self, filename, root=None):
+        if root == None:
+            root = os.path.dirname(__file__)
+        filepath = os.path.join(root,filename)
+        
+        return filepath
 
+    def get_last_request_date(self,filename,root=None):
+        filepath = self.get_filepath(filename,root=root)
+        
+        with open(filepath, 'r') as f:
+            last_request_date = json.load(f)
+        return last_request_date
+    
+    def save_last_request_date(self, last_request_date,filename, root=None):
+        filepath = self.get_filepath(filename,root=root)
+        
+        with open(filepath, 'w') as f:
+            json.dump(last_request_date, f)       
+        
+        
     # Helper func: add unique company identifier
     def addCompanyUniqueField(self, raw_data, companyName='', companyTicker=''):
         articles = raw_data["articles"]
@@ -144,7 +166,7 @@ class NewsArticles(NewsApiClient):
         return articles
 
         # Helper func: Get previous time parameters
-    def get_from_time(self):
+    def get_from_time(self,ticker):
         
         # Default to initalized value
         now = datetime.now()
@@ -154,11 +176,13 @@ class NewsArticles(NewsApiClient):
         #month = datetime.timedelta(weeks=4)
         
         # First request
-        if last_request_date_NEWSAPI is None:
+        filename = 'last_request_date.json'
+        last_request_date = self.get_last_request_date(filename)
+        if last_request_date[ticker] == 'None':
             return None
         
         #previous_timestamp = datetime.datetime.fromtimestamp(last_request_date_NEWSAPI)
-        previous_timestamp=datetime.fromtimestamp(last_request_date_NEWSAPI)
+        previous_timestamp=datetime.fromtimestamp(last_request_date[ticker])
         days_delta = now - previous_timestamp
         
         # more than than 1 month ago/4 weeks
