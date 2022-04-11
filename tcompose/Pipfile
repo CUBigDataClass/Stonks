@@ -8,6 +8,7 @@ django = "*"
 psycopg2-binary = "*"
 psycopg2 = "*"
 django-debug-toolbar = "*"
+django-jsonfield = "*"
 
 [dev-packages]
 
