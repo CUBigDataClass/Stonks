@@ -1,8 +1,11 @@
+import csv
 from django.shortcuts import render
 from django.http import HttpResponse
 
 # from .models import Companies, News, Stocks, Tweets
-from .models import Companies, News, Stocks, Tweets
+# from .models import Companies, News, Stocks, Tweets
+from .models import *
+from .utils import *
 
 from datetime import datetime, timedelta
 import json
@@ -13,9 +16,11 @@ from django.http import QueryDict
 # Create your views here.
 def getCompanyData(request):
     
+    
     # Default display settings
     company_ticker = 'AAPL' # default ticker
-    date_range = timedelta(days=7)
+    date_range = timedelta(days=7)# TODO uncomment
+    # date_range = timedelta(days=3)# TODO remove
     to_date = datetime.utcnow().replace(hour=0,minute=0,second=0,microsecond=0)
     from_date = to_date - date_range
     displayDict = {}
@@ -39,15 +44,29 @@ def getCompanyData(request):
         from_date = to_date - date_range
         
     # Get filtered data    
-    query_set = Stocks.objects.filter(pk=company_ticker).filter(date__range=(from_date,to_date))
+    # query_set = Stocks.objects.filter(pk=company_ticker).filter(date__range=(from_date,to_date)).values(values)
+    query_set = Stocks.objects.filter(pk=company_ticker).filter(date__range=(from_date,to_date)).values('date',
+                                                                                                        'company_ticker', 
+                                                                                                        'open', 
+                                                                                                        'high', 
+                                                                                                        'low', 
+                                                                                                        'close',)
     displayDict['stocks'] = list(query_set)
     
-    # query_set = News.objects.filter(pk=company_ticker).filter(date_published__range=(from_date,to_date))
-    # displayDict['news'] = list()
+    query_set = Tweets.objects.filter(company_ticker__contains=company_ticker).filter(date_published__range=(from_date,to_date)).values('date_published',
+                                                                                                                                        'sentiment')
+    displayDict['tweets'] = list(query_set)
 
     ##@todo: how to get DAILY sentiment (not individual tweets)    
-    # query_set = Tweets.objects.filter(company_ticker__contains=company_ticker).filter(date_published__range=(from_date,to_date))
-    # displayDict['news'] = list(query_set)
+    query_set = News.objects.filter(company_ticker__contains=company_ticker).filter(date_published__range=(from_date,to_date)).values('date_published',
+                                                                                                                                      'title', 
+                                                                                                                                        'author',
+                                                                                                                                        'article_url',
+                                                                                                                                        'url_image',
+                                                                                                                                        'article_description')
+    displayDict['news'] = list(query_set)
+    
+    return csv_helper_fn(request, displayDict)
     
     # ##@todo: Make into JSON
     # { date1: [
@@ -63,4 +82,4 @@ def getCompanyData(request):
     #     date2:....
     # ]}
 
-    return render(request, 'company.html', displayDict)
+    # return render(request, 'company.html', displayDict)
