@@ -1,0 +1,3 @@
+*cron*  eol=lf
+*.sh    eol=lf
+*requirements* eol=lf
