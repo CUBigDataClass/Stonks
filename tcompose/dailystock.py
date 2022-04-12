@@ -1,4 +1,4 @@
-from request_parameters import *
+# from request_parameters import *
 # from keys import *
 
 from google.cloud.sql.connector import connector
@@ -224,6 +224,9 @@ class stocks:
         return price_history
 
     def insert_all_latest_stock_data(self):
+        print('Done with Stocks - insert_all_latest_stock_data')
+        return # DEBUG ONLY
+        
         bucket_name = 'stonksbucket'
         destination_blob_name = 'stocks'
         storage_client = storage.Client()
@@ -287,6 +290,7 @@ if __name__ == "__main__":
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
     st=stocks(pg)
+    
     st.insert_all_latest_stock_data()
 
 

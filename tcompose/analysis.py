@@ -1,4 +1,4 @@
-from request_parameters import *
+# from request_parameters import *
 # from keys import *
 
 from google.cloud.sql.connector import connector

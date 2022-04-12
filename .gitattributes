@@ -1,3 +1,2 @@
-*cron*  eol=lf
-*.sh    eol=lf
-*requirements* eol=lf
+*.cron.d eol=lf
+*.sh eol=lf
