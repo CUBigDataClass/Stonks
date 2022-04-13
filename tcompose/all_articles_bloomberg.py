@@ -1,28 +1,23 @@
 from newsapi import NewsApiClient
-
 from keys import *
-from companies import *
-from db_keys import *
-from postGres import *
-
+import os
 from google.cloud import storage
 from datetime import datetime, timedelta
 import time
-import os
-
-import json
+from companies import *
+from db_keys import *
+from postGres import *
 from json import dumps
 from json import loads
+from kafka import KafkaProducer
+import requests
+import schedule
+import json
 
-# import requests
-# from kafka import KafkaProducer
-# import schedule
-
-
-# from pathlib import Path
+from pathlib import Path
 
 class NewsArticles(NewsApiClient):
-    """Using from newsapi's NewsApiClient. Adding functions to get our customized queries."""
+    #Using from newsapi's NewsApiClient. Adding functions to get our customized queries.
 
     def __init__(self,API_KEY_NEWSAPI, companies,sources, languages):
         self.newsapi = NewsApiClient(api_key=API_KEY_NEWSAPI)  # Open connection to newsapi API 
@@ -35,8 +30,6 @@ class NewsArticles(NewsApiClient):
     #currently O(n^2) time complexity, could optimize
     #maybe use dict
     def get_everything(self):
-        print('Returniing from news')
-        return # For Debugging TODO REMOVE
         
         #initializing connection
         pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
@@ -46,16 +39,38 @@ class NewsArticles(NewsApiClient):
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
+        last_update=0
+        today= datetime.today()
 
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
             for company in self.companies:
                 # ticker name
+                from_time=0
+                count=0
                 ticker=map1[company]
-                from_time = self.get_from_time(ticker)
-                
+                print("Ticker: "+ticker)
+                #check if there are any news from ticker in table
+                isEmpty = """SELECT * FROM news WHERE company_ticker='""" + ticker + """'"""
+                result = db_conn.execute(isEmpty)
+                for row in result:
+                    count+=1
+                #if empty
+                print("Count: "+str(count))
+                if (count==0):
+                    print("no previous entry, defaulting to 28 days ago")
+                    from_time= today - timedelta(days=28)
+                else:
+                    statement="""SELECT * FROM news WHERE company_ticker='"""+ticker+"""' ORDER BY date_published DESC LIMIT 1"""
+                    result = db_conn.execute(statement)
+                    #from_time = self.get_from_time(ticker)
+                    #5minutes added to avoid duplicated articles
+                    from_time=result.first()[7]+timedelta(minutes=5)
+                    print("previous entry found at " + str(from_time))
+
                 #company = str(self.companies[i])
                 # /v2/ All articles published some time ago of company
+                #print("time: "+str(from_time))
                 raw_data = self.newsapi.get_everything(
                     q=company,
                     sources=self.sources,
@@ -72,6 +87,7 @@ class NewsArticles(NewsApiClient):
                     #upload each article's bytes representation to bucket in a blob
                     blob.upload_from_string(json.dumps(article))
                     #parse then insert in to the news table
+                    #print(article)
 
                     #map1 allows it to convert to the ticker given company name.
                     ticker=map1[company]
@@ -81,28 +97,18 @@ class NewsArticles(NewsApiClient):
                     urlimage = article['urlToImage']
                     description = article['description']
                     date=article['publishedAt']
-
-                    """
-                    print(ticker)
-                    print(title)
-                    print(author)
-                    print(url)
-                    print(urlimage)
-                    print(description)
-                    print(date)
-                    """
-
                     #print(article)
                     statement = """ INSERT INTO news(company_ticker, title, author, article_URL, url_image, article_description, date_published) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
                     db_conn.execute(statement,(ticker,title,author,url,urlimage,description,date))
                     #sleep is needed, because it resulted in error 429 ratelimit exceeded
                     #only 1 modification/second is allowed, thus sleep for 1 second
                     #revisit if performance becomes an issue
+
                     time.sleep(1)
+
                 # print(raw_data['articles'][0]['author'])
                 # the json file where the output must be stored
-                self.saveJson(raw_data, ticker=ticker,company=company,file_name_ending="_all_articles.json", )
-
+                #self.saveJson(raw_data, ticker=ticker,company=company,file_name_ending="_all_articles.json", )
 
         return
 
@@ -112,9 +118,28 @@ class NewsArticles(NewsApiClient):
     def saveJson(self,raw_data,ticker,company,file_name_ending):
         # TODO: How to save when (time) query was made
         # TODO: Change hard code folder
-        
-        # self.saveArticles(company,raw_data, file_name_ending) # Not needed
 
+        # Get home directory
+        home = str(Path.home())+'/' # `/root/` for docker containers
+        
+        # Save as json file        
+        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
+        out_filename = company_no_space + file_name_ending
+        out_file = open(home + out_filename, "w")  
+        json.dump(raw_data, out_file, indent = 6) 
+        out_file.close() 
+
+        #Send json file to kafka (Currently commented out)
+        out_file = open(home + out_filename) 
+        response=json.load(out_file)
+        #print(response)
+        
+        ## TODO: DEBUG with for spending to kafka
+        #responseloads = loads(str(raw_data))
+        #print('rk', responseloads)
+        #producer.send(TOPIC_NAME, responseloads)
+        #producer.send(TOPIC_NAME, responseloads['articles'])
+        out_file.close() 
         
         #######################################################################
         # Update request timestamp
@@ -153,32 +178,7 @@ class NewsArticles(NewsApiClient):
 
         return articles
 
-    
-    def saveArticles(self,company,raw_data, file_name_ending):
-        # Get base directory
-        base_dir = os.path.dirname(__file__) # `/root/` for docker containers
-
-        # Save as json file        
-        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
-        out_filename = company_no_space + file_name_ending
-        out_file = open(base_dir + out_filename, "w")  
-        json.dump(raw_data, out_file, indent = 6) 
-        out_file.close() 
-
-        #Send json file to kafka (Currently commented out)
-        out_file = open(base_dir + out_filename) 
-        response=json.load(out_file)
-        #print(response)
-
-        ## TODO: DEBUG with for spending to kafka
-        #responseloads = loads(str(raw_data))
-        #print('rk', responseloads)
-        #producer.send(TOPIC_NAME, responseloads)
-        #producer.send(TOPIC_NAME, responseloads['articles'])
-        out_file.close() 
-
-    ############## Time     
-    # Helper func: Get previous time parameters
+        # Helper func: Get previous time parameters
     def get_from_time(self,ticker):
         
         # Default to initalized value
@@ -211,6 +211,7 @@ class NewsArticles(NewsApiClient):
 
 
 # Get articles
+
 if __name__=="__main__":
 
     """
@@ -220,15 +221,31 @@ if __name__=="__main__":
         sources, 
         languages)
     """
+
 #replaced company names to the one in companies file to use the map to ticker
-    newsArticles = NewsArticles(
+
+    newsArticles1 = NewsArticles(
             API_KEY_NEWSAPI,
-            top100,
+            apple,
             SOURCES,
             LANGUAGES)
+    newsArticles1.get_everything()
+    """
+    newsArticles2 = NewsArticles(
+        API_KEY_NEWSAPI2,
+        mid33,
+        SOURCES,
+        LANGUAGES)
+    newsArticles2.get_everything()
+    newsArticles3 = NewsArticles(
+        API_KEY_NEWSAPI3,
+        bot34,
+        SOURCES,
+        LANGUAGES)
+    newsArticles3.get_everything()
+    """
 
-    newsArticles.get_everything()
 
-    #print(companies)
+
     
     

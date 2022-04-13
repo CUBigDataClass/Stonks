@@ -1,4 +1,4 @@
 * * * * * root echo "(1) Hello world - Tcron log">> /var/log/cron.log 2>&1
-5 0 * * * root /bin/bash /root/run_newsapi.sh >> /var/log/cron.log 2>&1
-5 3 * * * root /bin/bash /root/run_stockdata.sh >> /var/log/cron.log 2>&1
+5 2 * * * root /bin/bash /root/run_newsapi.sh >> /var/log/cron.log 2>&1
+5 2 * * 4-6 root /bin/bash /root/run_stockdata.sh >> /var/log/cron.log 2>&1
 # Don't remove the empty line at the end of this file. It is required to run the cron job

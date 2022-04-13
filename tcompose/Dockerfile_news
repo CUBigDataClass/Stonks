@@ -1,5 +1,4 @@
-FROM ubuntu:latest
-MAINTAINER docker@ekito.fr
+FROM ubuntu:20.04
 
 # Add crontab file in the cron directory
 ADD crontab /etc/cron.d/news-cron
@@ -38,8 +37,6 @@ COPY dailystock.py  /root/dailystock.py
 
 COPY companies.py  /root/companies.py
 COPY postGres.py /root/postGres.py
-COPY last_request_date.json  /root/last_request_date.json
-
 COPY keys.py  /root/keys.py
 COPY db_keys.py /root/db_keys.py
 COPY creds.json /root/creds.json
