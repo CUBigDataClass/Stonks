@@ -9,9 +9,27 @@
 <!-- Import D3 Color Scale -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
+<!-- GET request: 127.0.0.1:8000/companyData/company -->
+<!-- Credit/source with respect to: https://www.w3docs.com/snippets/javascript/how-to-make-http-get-request-in-javascript.html-->
+<script>
+  function httpGetAsync(theUrl, callback)
+  {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() { 
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+              callback(xmlHttp.responseText);
+      }
+      xmlHttp.open("GET", theUrl, true);
+      xmlHttp.send(null);
+  }
+  //TODO: figure out correct URL to put in function or run this on localhost (?)
+  httpGetAsync('127.0.0.1:8000/companyData/company', function(data) {
+    //TODO: do something with your data
+  });
+</script>
+
 <!-- calling the graph here -->>
 <div id="my_data"></div>
-
 <body style="background-color: #0c0c0c"> 
 </body>
 <script>
