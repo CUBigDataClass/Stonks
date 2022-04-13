@@ -1,0 +1,15 @@
+/* Just le styling prob dont need to make any changed here */
+body {
+  background-color: #a4a4a4;
+  padding: 10px;
+  margin: 0;
+  max-height: 100%;
+  width: 95%;
+}
+
+img {
+  display: none;
+  max-width: 6%;
+  margin: 0;
+  position: absolute;
+}
