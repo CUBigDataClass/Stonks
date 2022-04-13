@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     with pg.pool.connect() as db_conn:
         #result = db_conn.execute("select * from tweets")
-        result = db_conn.execute("select * from news ORDER BY date_published DESC")
+        #result = db_conn.execute("""select company_ticker from news""")
         #result = db_conn.execute("""select * from news where date_published BETWEEN '2022-04-01 01:01:00' AND '2022-04-09 01:01:01'""")
         #result = db_conn.execute("select company_ticker from companies")
         #ticker='MSFT'
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         #result= db_conn.execute(check)
         #result= db_conn.execute("""select * from stocks where company_ticker='MSFT'""")
         #result2 = db_conn.execute("select * from stocks where company_ticker='2222.SR'")
-        #result= db_conn.execute("""select * from stocks""")
+        result= db_conn.execute("""select company_ticker from stocks""")
         #result= db_conn.execute("""select * from newss where company_ticker='2222.SR' ORDER BY date DESC LIMIT 1""")
         val=0
         date1=""

@@ -9,9 +9,7 @@ from db_keys import *
 from postGres import *
 from json import dumps
 from json import loads
-from kafka import KafkaProducer
 import requests
-import schedule
 import json
 
 from pathlib import Path
@@ -226,24 +224,25 @@ if __name__=="__main__":
 
     newsArticles1 = NewsArticles(
             API_KEY_NEWSAPI,
-            apple,
+            top33,
             SOURCES,
             LANGUAGES)
     newsArticles1.get_everything()
-    """
+
     newsArticles2 = NewsArticles(
         API_KEY_NEWSAPI2,
         mid33,
         SOURCES,
         LANGUAGES)
     newsArticles2.get_everything()
+
     newsArticles3 = NewsArticles(
         API_KEY_NEWSAPI3,
         bot34,
         SOURCES,
         LANGUAGES)
     newsArticles3.get_everything()
-    """
+
 
 
 

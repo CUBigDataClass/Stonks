@@ -229,8 +229,7 @@ class stocks:
         last_date=None
         with self.pg.pool.connect() as db_conn:
             size_query = db_conn.execute("""SELECT * FROM stocks""")
-            size = db_conn.execute(size_query)
-            for row in size:
+            for row in size_query:
                 count+=1
 
             if (count==0):
@@ -275,7 +274,6 @@ class stocks:
                             if dupecheck==0:
                                 statement = """ INSERT INTO stocks(date, company_ticker, open, high, low, close, volume, dividends) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
                                 db_conn.execute(statement, (curr_date, symbol, open, high, low, close, volume, dividends))
-
                                 print("{} Stock Data for {} added".format(ticker,curr_date))
                                 #price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
                                 "Latest Stock Prices Inserted"
