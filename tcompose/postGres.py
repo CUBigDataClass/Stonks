@@ -1,4 +1,4 @@
-from request_parameters import *
+# from request_parameters import *
 #from db_keys import *
 # from keys import *
 from google.cloud.sql.connector import Connector
@@ -8,7 +8,6 @@ from datetime import date
 from datetime import timedelta
 import pandas as pd
 import os
-
 
 class GCP_PostGreSQL():
     def __init__(self, connectionName, user, password, db, top_companies_tickers):

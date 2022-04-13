@@ -57,11 +57,7 @@ services:
     container_name: news
     build:
       context: .
-      dockerfile: news
-    networks:
-      - kafka_network
-    depends_on:
-      - kafka-1
+      dockerfile: Dockerfile_news
     entrypoint:
       - bash
       - -c

@@ -1,21 +1,25 @@
 from newsapi import NewsApiClient
-from request_parameters import * 
+
 from keys import *
-import os
-from google.cloud import storage
-from datetime import datetime, timedelta
-import time
 from companies import *
 from db_keys import *
 from postGres import *
+
+from google.cloud import storage
+from datetime import datetime, timedelta
+import time
+import os
+
+import json
 from json import dumps
 from json import loads
-from kafka import KafkaProducer
-import requests
-import schedule
-import json
 
-from pathlib import Path
+# import requests
+# from kafka import KafkaProducer
+# import schedule
+
+
+# from pathlib import Path
 
 class NewsArticles(NewsApiClient):
     """Using from newsapi's NewsApiClient. Adding functions to get our customized queries."""
@@ -31,6 +35,8 @@ class NewsArticles(NewsApiClient):
     #currently O(n^2) time complexity, could optimize
     #maybe use dict
     def get_everything(self):
+        print('Returniing from news')
+        return # For Debugging TODO REMOVE
         
         #initializing connection
         pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
@@ -97,6 +103,7 @@ class NewsArticles(NewsApiClient):
                 # the json file where the output must be stored
                 self.saveJson(raw_data, ticker=ticker,company=company,file_name_ending="_all_articles.json", )
 
+
         return
 
 
@@ -105,28 +112,9 @@ class NewsArticles(NewsApiClient):
     def saveJson(self,raw_data,ticker,company,file_name_ending):
         # TODO: How to save when (time) query was made
         # TODO: Change hard code folder
-
-        # Get home directory
-        home = str(Path.home())+'/' # `/root/` for docker containers
         
-        # Save as json file        
-        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
-        out_filename = company_no_space + file_name_ending
-        out_file = open(home + out_filename, "w")  
-        json.dump(raw_data, out_file, indent = 6) 
-        out_file.close() 
+        # self.saveArticles(company,raw_data, file_name_ending) # Not needed
 
-        #Send json file to kafka (Currently commented out)
-        out_file = open(home + out_filename) 
-        response=json.load(out_file)
-        #print(response)
-        
-        ## TODO: DEBUG with for spending to kafka
-        #responseloads = loads(str(raw_data))
-        #print('rk', responseloads)
-        #producer.send(TOPIC_NAME, responseloads)
-        #producer.send(TOPIC_NAME, responseloads['articles'])
-        out_file.close() 
         
         #######################################################################
         # Update request timestamp
@@ -165,7 +153,32 @@ class NewsArticles(NewsApiClient):
 
         return articles
 
-        # Helper func: Get previous time parameters
+    
+    def saveArticles(self,company,raw_data, file_name_ending):
+        # Get base directory
+        base_dir = os.path.dirname(__file__) # `/root/` for docker containers
+
+        # Save as json file        
+        company_no_space = str(company.replace(" ", "")) # Remove space in company name (for filename)
+        out_filename = company_no_space + file_name_ending
+        out_file = open(base_dir + out_filename, "w")  
+        json.dump(raw_data, out_file, indent = 6) 
+        out_file.close() 
+
+        #Send json file to kafka (Currently commented out)
+        out_file = open(base_dir + out_filename) 
+        response=json.load(out_file)
+        #print(response)
+
+        ## TODO: DEBUG with for spending to kafka
+        #responseloads = loads(str(raw_data))
+        #print('rk', responseloads)
+        #producer.send(TOPIC_NAME, responseloads)
+        #producer.send(TOPIC_NAME, responseloads['articles'])
+        out_file.close() 
+
+    ############## Time     
+    # Helper func: Get previous time parameters
     def get_from_time(self,ticker):
         
         # Default to initalized value
