@@ -219,7 +219,10 @@ class stocks:
         return price_history
 
     def insert_all_latest_stock_data(self):
+<<<<<<< HEAD
+=======
         
+>>>>>>> 941d39dcd47e141b97cbe2bfd1980d0595abf05a
         bucket_name = 'stonksbucket'
         destination_blob_name = 'stocks'
         storage_client = storage.Client()
@@ -318,8 +321,12 @@ if __name__ == "__main__":
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
     st=stocks(pg)
+<<<<<<< HEAD
     st.insert_all_latest_stock_data()
+=======
     
+    # st.insert_all_latest_stock_data()
+>>>>>>> 941d39dcd47e141b97cbe2bfd1980d0595abf05a
 
 
 

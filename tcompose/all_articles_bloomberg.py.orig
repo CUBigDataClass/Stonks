@@ -28,8 +28,11 @@ class NewsArticles(NewsApiClient):
     #currently O(n^2) time complexity, could optimize
     #maybe use dict
     def get_everything(self):
+<<<<<<< HEAD
         
+=======
 
+>>>>>>> 941d39dcd47e141b97cbe2bfd1980d0595abf05a
         #initializing connection
         pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
@@ -246,7 +249,10 @@ if __name__=="__main__":
 
 
 
+<<<<<<< HEAD
+=======
     # newsArticles.get_everything()
+>>>>>>> 941d39dcd47e141b97cbe2bfd1980d0595abf05a
 
     
     
