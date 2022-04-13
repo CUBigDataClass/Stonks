@@ -1,2 +1,2 @@
-*.crontab eol=lf
+*crontab eol=lf
 *.sh eol=lf
