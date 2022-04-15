@@ -93,7 +93,7 @@ CORS_ALLOW_CREDENTIALS: True
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#preflighted_requests
 # resource can be accessed by any origin. 
 # (If responsing to a 'credentialed requests request', then server MSUT speicificy origin value, not *)
-Access-Control-Allow-Origin: *
+# Access-Control-Allow-Origin: 
 
 # INTERNAL_IPS = [
 #     # ...
