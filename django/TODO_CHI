@@ -1,0 +1,5 @@
+
+- configure/settings.py:
+- - Debug off
+- - ALLOWED_HOSTS=['SOME_CU_BOLDER DOMAIN', ...] (ports)# in setting it self
+- - CORS_ALLOWED_ORIGINS = (same as aloowed host)
