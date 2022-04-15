@@ -10,14 +10,9 @@ sqlalchemy
 cloud-sql-python-connector[pg8000]
 google-cloud-storage
 pandas
-json
-os
 datetime
-time
-sys
 requests
 pathlib
-nodejs
 python-dotenv
 sqlparse
 wheel

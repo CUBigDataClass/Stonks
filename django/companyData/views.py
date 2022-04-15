@@ -37,8 +37,6 @@ def getCompanyData(request, company_ticker='AAPL', days=365):
     resType = list
 
     # Company specificed
-    # company_name = Companies.objects.values_list(
-    #     'company_name', flat=True).get(pk=company_ticker)
     company = Companies.objects.filter(company_ticker__contains=company_ticker).values()
 
     displayDict['company_info'] = resType(company)
@@ -73,12 +71,10 @@ def listCompanies(request):
     companies = {}
 
     # company_names = list(Companies.objects.values_list('company_name', flat=True).get(pk=company_ticker))
-    company_tickers = list(
-        Companies.objects.values_list('company_ticker', flat=True))
+    company_tickers = list(Companies.objects.values_list('company_ticker', flat=True))
 
     url = 'http://127.0.0.1:8000/companyData/company/' ## Can change
 
-    print(s)
     for c in range(len(company_tickers)):
         companies[company_tickers[c]] = url+str(company_tickers[c])+'/365'
 
