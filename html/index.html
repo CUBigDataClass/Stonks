@@ -1,89 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-  </head>
+    <title>Big Data:Stonks</title>
+    <meta charset="utf-8" />
 
-  <body style="background-color: #0c0c0c">
-    <<<<<<< HEAD
-    <!-- Nav bar -->
-    <section>
-      <div class="topnav">
-        <a href="#">Watchlist</a>
-        <a href="#">What we do</a>
-        <a href="#">Team</a>
-        <a class="active" href="#home">Home</a>
-      </div>
-
-      <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
-          >&times;</a
-        >
-        <a href="#">NEED</a>
-        <a href="#">TO </a>
-        <a href="#">Change </a>
-        <a href="#">LATER</a>
-      </div>
-
-      <div id="main">
-        <button class="openbtn" onclick="openNav()">
-          &#9776; Open Sidebar
-        </button>
-        <h2>Collapsed Sidebar</h2>
-        <p>Content...</p>
-      </div>
-    </section>
-    <img
-      src="https://i.kym-cdn.com/entries/icons/original/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg"
-      class="center"
-      alt="stonks"
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
-    =======
-    <style>
-      body {
-        background-image: url("img/stonkslogo.png");
-        background-size: 550px;
-        background-repeat: no-repeat;
-        float: right;
-      }
-      .button {
-        background-color: #3dcb44;
-        color: white;
-        padding: 15px 30px;
-        text-align: center;
-        text-decoration: none;
-        font-family: "Playfair Display", serif;
-        display: inline-block;
-        font-size: 16px;
-      }
-    </style>
-    <div style="padding: 10px 100px">
-      <h1
-        style="
-          color: white;
-          font-family: 'Playfair Display', serif;
-          width: 550px;
-          font-size: 70px;
-        "
-      >
-        Your best up to date information about stocks
-      </h1>
-      <p
-        style="
-          color: white;
-          font-family: 'Playfair Display', serif;
-          width: 550px;
-          font-size: 16px;
-        "
-      >
-        Our tools give you up-to-date information about stocks and what's
-        happening in the world blah blah (EDIT THIS INTRO LATER)
-      </p>
-      <a href="Stonks.html" class="button">Get started</a>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link href="css/stonks.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="icon" href="images/cloud-computing.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Allison&family=BenchNine:wght@300&family=Gaegu:wght@700&family=Gamja+Flower&family=Tangerine:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="w3-top">
+      <div class="navbar">
+        <a href="index.html" class="w3-bar-item w3-button">Home</a>
+        <div class="w3-right w3-hide-small">
+          <a href="labs.html" class="w3-bar-item w3-button">Watchlist</a>
+          <a href="about.html" class="w3-bar-item w3-button">What we Do</a>
+          <a href="project-journal.html" class="w3-bar-item w3-button">Team</a>
+          <!-- TO DO: Change this later. Graph is currently linked so I can test on localhost easier -->
+          <a href="graph.html" class="w3-bar-item w3-button"> graph (temp) </a>
+        </div>
+      </div>
     </div>
-    >>>>>>> 5c95e0a2ea8190d994ee1d504b49fa089f38a4d3
+    <h3 class="center">
+      <img
+        src="img/stonkslogo-cropped.png"
+        alt="finance man pushing up the stock market"
+      />
+    </h3>
+    <div id="container">
+      <div class="thirdbox">
+        <a href="allStonks.html">
+          <!-- <img src="images/summer-flower.gif" alt="three flowers circling" /> -->
+        </a>
+        <h2>All Stocks</h2>
+      </div>
+      <div class="twothirdbox">
+        <p class="homepage-paragraphs">
+          Browse all stocks, see info like company news, what Twitter is saying
+          about the company, and daily stock data
+        </p>
+      </div>
+      <div class="twothirdbox">
+        <p class="homepage-paragraphs">
+          New to trading stocks? See what is trending with the top 20 companies
+          to watch right now.
+        </p>
+      </div>
+      <div class="thirdbox">
+        <a href="projects.html">
+          <img src="img/cafe.gif" alt="whisking a mixture" />
+        </a>
+        <h2>Watchlist</h2>
+      </div>
+      <div class="thirdbox">
+        <a href="project-journal.html">
+          <img
+            src="img/journal-love.gif"
+            alt="a checklist"
+            style="padding-top: 9vw"
+          />
+        </a>
+        <h2>My favorites</h2>
+      </div>
+      <div class="twothirdbox">
+        <p class="homepage-paragraphs">See all of your favorited stocks here</p>
+      </div>
+    </div>
   </body>
 </html>
