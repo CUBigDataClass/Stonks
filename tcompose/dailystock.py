@@ -1,24 +1,20 @@
-from request_parameters import *
-# from keys import *
+
 
 from google.cloud.sql.connector import connector
 import pg8000.native
 import sqlalchemy
 import yfinance as yf
-from datetime import date
-from datetime import timedelta
+from datetime import *
 import pandas as pd
 import os
+import time
 from google.cloud import storage
 from postGres import *
 from companies import *
+from db_keys import *
+from keys import *
 import json
 
-# this is to import from file thats in different path
-import sys
-loc='C:/Users/13038/Desktop'
-sys.path.append(loc)
-from db_keys import *
 
 class stocks:
 
@@ -215,7 +211,6 @@ class stocks:
         """
 
         price_history = yf.Ticker('{}'.format(ticker)).history(start = '{}'.format(yesterday), end='{}'.format(today))
-
         #some formatting
         price_history = price_history.reset_index()
         price_history['symbol'] = '{}'.format(ticker)
@@ -224,39 +219,74 @@ class stocks:
         return price_history
 
     def insert_all_latest_stock_data(self):
+        
         bucket_name = 'stonksbucket'
         destination_blob_name = 'stocks'
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
+        dupecheck=0
+        count=0
+        last_date=None
         with self.pg.pool.connect() as db_conn:
-            today = date.today()
-            yesterday = today - timedelta(days = 1)
+            size_query = db_conn.execute("""SELECT * FROM stocks""")
+            for row in size_query:
+                count+=1
 
-            for ticker in self.pg.top_companies_tickers:
-                price_history = self.insert_latest_stock_data(ticker, today,yesterday)
-                #print(price_history)
-                row=price_history.loc[0]
-                curr_date = row['Date']
-                curr_date = curr_date[:10] + " " + curr_date[11:19]
-                open = row['Open']
-                high = row['High']
-                low = row['Low']
-                close = row['Close']
-                volume = row['Volume']
-                dividends = row['Dividends']
-                symbol = row['symbol']
-                #print(symbol,curr_date,open,high,low,close,volume,dividends)
-                #print(price_history.loc[0]['Date'])
-                # print(type(date))
+            if (count==0):
+                self.insert_all_historical_prices()
 
-                statement = """ INSERT INTO stocks(date, company_ticker, open, high, low, close, volume, dividends) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
-                db_conn.execute(statement, (curr_date, symbol, open, high, low, close, volume, dividends))
-                print("{} Latest Stock Data added".format(ticker))
-                #price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
-                "Latest Stock Prices Inserted"
-                #insert in to bucket
-                #blob.upload_from_string(price_history.to_csv())
+            else:
+                today = date.today()
+                #print(today)
+                #yesterday = today - timedelta(days = 1)
+                for ticker in self.pg.top_companies_tickers:
+                    #print(ticker)
+                    date_query = db_conn.execute("""select * from stocks where company_ticker='""" + ticker + """'   ORDER BY date DESC LIMIT 1""")
+                    last_date=date_query.first()[0]
+                    #print("last_date"+str(last_date))
+                    last_date=last_date.strftime("%Y-%m-%d")
+                    #print(last_date)
+                    dupecheck=0
+                    #check if we haven't ran the function today
+                    if today!=last_date:
+                        price_history = self.insert_latest_stock_data(ticker, today,last_date)
+                        #print(price_history)
+                        row_count=len(price_history.index)
+                        for x in range(row_count):
+                            dupecheck=0
+                            row=price_history.loc[x]
+                            curr_date = row['Date']
+                            #print("currdate: "+curr_date)
+                            #curr_date = curr_date[:10] + " " + curr_date[11:19]
+                            open = row['Open']
+                            high = row['High']
+                            low = row['Low']
+                            close = row['Close']
+                            volume = row['Volume']
+                            dividends = row['Dividends']
+                            symbol = row['symbol']
+                            check="""select * from stocks where company_ticker='"""+ticker+"""' AND date='"""+curr_date+"""'"""
+                            initcheck=db_conn.execute(check)
+                            #str_date=curr_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+                            for row in initcheck:
+                                dupecheck+=1
+
+                            if dupecheck==0:
+                                statement = """ INSERT INTO stocks(date, company_ticker, open, high, low, close, volume, dividends) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+                                db_conn.execute(statement, (curr_date, symbol, open, high, low, close, volume, dividends))
+                                print("{} Stock Data for {} added".format(ticker,curr_date))
+                                #price_history.to_sql('daily_prices', con=db_conn, if_exists='append', index=False)
+                                "Latest Stock Prices Inserted"
+                                #insert in to bucket
+                                blob.upload_from_string(price_history.to_csv())
+                            else:
+                                #print(dupecheck)
+                                print("dupekey exists")
+
+                            time.sleep(1)
+                    else:
+                        print("function already ran today")
             #print(price_history)
 
     def delete_price_data(self):
@@ -283,11 +313,14 @@ class stocks:
 if __name__ == "__main__":
     #The credential path will be where the json file of secret keys is stored on your machine.
     #credential_path = "<File Path to where the json file of secret keys is stored in your local machine>"
+
     credential_path='creds.json'
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
     st=stocks(pg)
     st.insert_all_latest_stock_data()
+    
+
 
 
     #st.get_company_info('AAPL')

@@ -43,11 +43,15 @@ class TwitterStream(Stream):
         else:
             tweet_text = response['text']
 
+        print(tweet_text, '\n')
+
         # Associate each company mentioned with the tweet
         companies_mentioned = self.get_companies(tweet_text)
         for corp in companies_mentioned:
             response['company_name'] = corp
             producer.send(TOPIC_NAME, response)
+
+
 
     def on_error(self, status_code):
         """
@@ -71,7 +75,7 @@ if __name__ == "__main__":
         API_KEY, API_KEY_SECERT,
         ACCESS_TOKEN, ACCESS_TOKEN_SECRET
     )
-    #print("producer is producing...")
+
     stream.filter(track=['Microsoft'], languages=['en'])
     producer.flush()
 

@@ -1,0 +1,24 @@
+## News 
+newsapi-python
+
+## Stocks
+yfinance
+
+## DB
+sqlalchemy
+cloud-sql-python-connector[pg8000]
+google-cloud-storage
+pandas
+
+## Python3 (Already installed)
+#json
+#os
+#datetime
+#time
+#sys
+#requests
+
+## ZZZ
+#kafka-python
+#schedule
+#pathlib

@@ -1,0 +1,23 @@
+<!-- Note: This is a test for GET from views.py-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Neuton:wght@700&family=Playfair+Display&display=swap');
+    </style>
+  </head>
+  <body>
+    <!-- import session storage -->
+    <p>note: your stored favorites will be cleared once you exit tab</p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage"></a>
+    <script>
+      //Stores session 
+      //@TO-DO: Implement for loop that stores the value
+      //TO-DO: Implement an if statement for this code to be executed when the 'favorite' button is clicked in company page 
+      sessionStorage.setItem('company', 'company-name');
+      console.log(sessionStorage.getItem('company'))
+    </script>
+  </body>
+</html>

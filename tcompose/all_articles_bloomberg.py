@@ -1,7 +1,5 @@
 from newsapi import NewsApiClient
-from request_parameters import * 
 from keys import *
-from last_request_date import *
 import os
 from google.cloud import storage
 from datetime import datetime, timedelta
@@ -11,15 +9,13 @@ from db_keys import *
 from postGres import *
 from json import dumps
 from json import loads
-from kafka import KafkaProducer
 import requests
-import schedule
 import json
 
 from pathlib import Path
 
 class NewsArticles(NewsApiClient):
-    """Using from newsapi's NewsApiClient. Adding functions to get our customized queries."""
+    #Using from newsapi's NewsApiClient. Adding functions to get our customized queries.
 
     def __init__(self,API_KEY_NEWSAPI, companies,sources, languages):
         self.newsapi = NewsApiClient(api_key=API_KEY_NEWSAPI)  # Open connection to newsapi API 
@@ -32,7 +28,8 @@ class NewsArticles(NewsApiClient):
     #currently O(n^2) time complexity, could optimize
     #maybe use dict
     def get_everything(self):
-        from_time = self.get_from_time()
+        
+
         #initializing connection
         pg = GCP_PostGreSQL(con_name, user, pw, db, tickers)
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'creds.json'
@@ -41,12 +38,38 @@ class NewsArticles(NewsApiClient):
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
+        last_update=0
+        today= datetime.today()
 
         with pg.pool.connect() as db_conn:
         # Loop through specificied companies
             for company in self.companies:
+                # ticker name
+                from_time=0
+                count=0
+                ticker=map1[company]
+                print("Ticker: "+ticker)
+                #check if there are any news from ticker in table
+                isEmpty = """SELECT * FROM news WHERE company_ticker='""" + ticker + """'"""
+                result = db_conn.execute(isEmpty)
+                for row in result:
+                    count+=1
+                #if empty
+                print("Count: "+str(count))
+                if (count==0):
+                    print("no previous entry, defaulting to 28 days ago")
+                    from_time= today - timedelta(days=28)
+                else:
+                    statement="""SELECT * FROM news WHERE company_ticker='"""+ticker+"""' ORDER BY date_published DESC LIMIT 1"""
+                    result = db_conn.execute(statement)
+                    #from_time = self.get_from_time(ticker)
+                    #5minutes added to avoid duplicated articles
+                    from_time=result.first()[7]+timedelta(minutes=5)
+                    print("previous entry found at " + str(from_time))
+
                 #company = str(self.companies[i])
                 # /v2/ All articles published some time ago of company
+                #print("time: "+str(from_time))
                 raw_data = self.newsapi.get_everything(
                     q=company,
                     sources=self.sources,
@@ -63,6 +86,7 @@ class NewsArticles(NewsApiClient):
                     #upload each article's bytes representation to bucket in a blob
                     blob.upload_from_string(json.dumps(article))
                     #parse then insert in to the news table
+                    #print(article)
 
                     #map1 allows it to convert to the ticker given company name.
                     ticker=map1[company]
@@ -72,34 +96,25 @@ class NewsArticles(NewsApiClient):
                     urlimage = article['urlToImage']
                     description = article['description']
                     date=article['publishedAt']
-
-                    """
-                    print(ticker)
-                    print(title)
-                    print(author)
-                    print(url)
-                    print(urlimage)
-                    print(description)
-                    print(date)
-                    """
-
                     #print(article)
                     statement = """ INSERT INTO news(company_ticker, title, author, article_URL, url_image, article_description, date_published) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
                     db_conn.execute(statement,(ticker,title,author,url,urlimage,description,date))
                     #sleep is needed, because it resulted in error 429 ratelimit exceeded
                     #only 1 modification/second is allowed, thus sleep for 1 second
                     #revisit if performance becomes an issue
+
                     time.sleep(1)
+
                 # print(raw_data['articles'][0]['author'])
                 # the json file where the output must be stored
-                self.saveJson(raw_data, company=company,file_name_ending="_all_articles.json", )
+                #self.saveJson(raw_data, ticker=ticker,company=company,file_name_ending="_all_articles.json", )
 
         return
 
 
 
     # Helper func: save json/json
-    def saveJson(self,raw_data,company,file_name_ending):
+    def saveJson(self,raw_data,ticker,company,file_name_ending):
         # TODO: How to save when (time) query was made
         # TODO: Change hard code folder
 
@@ -127,13 +142,32 @@ class NewsArticles(NewsApiClient):
         
         #######################################################################
         # Update request timestamp
-        out_filename = 'last_request_date.py'
-        out_file = open(home + out_filename, "w")  
+        filename = 'last_request_date.json'
+        last_request_date = self.get_last_request_date(filename)
+        last_request_date[ticker]=time.time()        
+        self.save_last_request_date(last_request_date,filename)
         
-        ## - Save varable (source:https://www.pythonpool.com/python-save-variable-to-file/)
-        out_file.write("%s = %f\n" %("last_request_date_NEWSAPI", time.time()))
-        out_file.close()
+    def get_filepath(self, filename, root=None):
+        if root == None:
+            root = os.path.dirname(__file__)
+        filepath = os.path.join(root,filename)
+        
+        return filepath
 
+    def get_last_request_date(self,filename,root=None):
+        filepath = self.get_filepath(filename,root=root)
+        
+        with open(filepath, 'r') as f:
+            last_request_date = json.load(f)
+        return last_request_date
+    
+    def save_last_request_date(self, last_request_date,filename, root=None):
+        filepath = self.get_filepath(filename,root=root)
+        
+        with open(filepath, 'w') as f:
+            json.dump(last_request_date, f)       
+        
+        
     # Helper func: add unique company identifier
     def addCompanyUniqueField(self, raw_data, companyName='', companyTicker=''):
         articles = raw_data["articles"]
@@ -144,7 +178,7 @@ class NewsArticles(NewsApiClient):
         return articles
 
         # Helper func: Get previous time parameters
-    def get_from_time(self):
+    def get_from_time(self,ticker):
         
         # Default to initalized value
         now = datetime.now()
@@ -154,11 +188,13 @@ class NewsArticles(NewsApiClient):
         #month = datetime.timedelta(weeks=4)
         
         # First request
-        if last_request_date_NEWSAPI is None:
+        filename = 'last_request_date.json'
+        last_request_date = self.get_last_request_date(filename)
+        if last_request_date[ticker] == 'None':
             return None
         
         #previous_timestamp = datetime.datetime.fromtimestamp(last_request_date_NEWSAPI)
-        previous_timestamp=datetime.fromtimestamp(last_request_date_NEWSAPI)
+        previous_timestamp=datetime.fromtimestamp(last_request_date[ticker])
         days_delta = now - previous_timestamp
         
         # more than than 1 month ago/4 weeks
@@ -174,6 +210,7 @@ class NewsArticles(NewsApiClient):
 
 
 # Get articles
+
 if __name__=="__main__":
 
     """
@@ -183,15 +220,33 @@ if __name__=="__main__":
         sources, 
         languages)
     """
+
 #replaced company names to the one in companies file to use the map to ticker
-    newsArticles = NewsArticles(
+
+    newsArticles1 = NewsArticles(
             API_KEY_NEWSAPI,
-            top100,
+            top33,
             SOURCES,
             LANGUAGES)
+    newsArticles1.get_everything()
 
-    newsArticles.get_everything()
+    newsArticles2 = NewsArticles(
+        API_KEY_NEWSAPI2,
+        mid33,
+        SOURCES,
+        LANGUAGES)
+    newsArticles2.get_everything()
 
-    #print(companies)
+    newsArticles3 = NewsArticles(
+        API_KEY_NEWSAPI3,
+        bot34,
+        SOURCES,
+        LANGUAGES)
+    newsArticles3.get_everything()
+
+
+
+    # newsArticles.get_everything()
+
     
     
