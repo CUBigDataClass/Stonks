@@ -195,6 +195,25 @@ a:hover {
   box-sizing: border-box;
   text-align: center;
 }
+/* allow room for 3 columns */
+ol
+{
+  width: 60em;
+}  /* float & allow room for the widest item */
+ol li
+{
+  color: white;
+  float: left;
+  width: 15em;
+}  /* stop the float */
+br
+{
+  clear: left;
+}  separate the list from subsequent markup
+div.wrapper
+{
+  margin-bottom: 1em;
+}
 @media screen and (max-width: 320px) {
   /* comes into effect for screens less than or equal to 320 pixels */
   #somethingorother {
