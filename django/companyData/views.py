@@ -4,6 +4,8 @@ from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.core import serializers
 
+# from django.
+
 # from .models import Companies, News, Stocks, Tweets
 # from .models import Companies, News, Stocks, Tweets
 from .models import *
@@ -130,17 +132,28 @@ def getCompanyData(request, company_ticker='AAPL', days=365):
     return JsonResponse(displayDict)
 
 
+from django.urls import reverse
 def listCompanies(request):
     companies = {}
 
     # company_names = list(Companies.objects.values_list('company_name', flat=True).get(pk=company_ticker))
     company_tickers = list(Companies.objects.values_list('company_ticker', flat=True))
+    
+    # from django.urls import include, path
+    
+    # print(path())
+    # url = 'http://127.0.0.1:8000/companyData/company/' ## Can change
+    # url = request.build_absolute_uri()
+    
+    # from django.core.urlresolvers import reverse
+    # print(reverse('stocks-default'), args(company_tickers[c]))
+    # url = reverse('companyData.view.listCompanies')
 
-    url = 'http://127.0.0.1:8000/companyData/company/' ## Can change
-
+    url = 'http://'+ request.META['HTTP_HOST']
+    
     for c in range(len(company_tickers)):
-        companies[company_tickers[c]] = url+str(company_tickers[c])+'/365'
-
+        url = url + reverse('stocks-default', args=(company_tickers[c],365))
+        companies[company_tickers[c]] = url
     return JsonResponse(companies)
 
 

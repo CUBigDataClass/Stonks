@@ -9,12 +9,13 @@ urlpatterns = [
         path('stock/close/', views.getStock, {'fields':['close']}),
         path('stock/low/', views.getStock, {'fields':['low']}),
         path('stock/high/', views.getStock, {'fields':['high']}),
-        path('stock/', views.getStock),
+        path('stock/', views.getStock,name='stocks-default'),
         path('news/', views.getNews),
         path('tweets/',views.getTweets),
-        path('companyInfo/', views.getCompanyInfo),
         ])),
-    path('company/', views.listCompanies),
+    path('<str:company_ticker>/companyInfo/', views.getCompanyInfo),
+    path('companies/', views.listCompanies),
+
 ]
 
 
