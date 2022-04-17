@@ -1,0 +1,6 @@
+csv where query with the default params of:
+(assuming today's date is 2022-04-09, because that's when I generated the dummy data)
+Company Ticker: 'AAPL'
+date_range = 7
+from_date: 2022-04-02 00:00:00 
+to_date: 2022-04-09 00:00:00
