@@ -1,12 +1,11 @@
+## Not using anymore
+
 import csv 
 ## DEBUG imports #@todo: remove
 from django.http import QueryDict
 from django.shortcuts import render
 from django.http import HttpResponse
 
-import zipfile
-# from io import StringIO 
-import io
 
 from .models import *
 
