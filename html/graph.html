@@ -33,25 +33,42 @@ body {
 
 </style>
 <body>
-<script src="https://d3js.org/d3.v3.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 //Connecting to stock.json file 
 d3.json("stock.json", function(data) {
-  //with source + reference help with respect to : 
-    // http://bl.ocks.org/crayzeewulf/9719255
-    // http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html
-  //TODO: Figure out how to parse the date and replace the x axis with data.stock.date 
+  //this is a really long winded way to split the dates as I don't know how to work around the json file format using newer versions of d3..
+  //Function to parse the date 
+  function parse_date(date){
+    var date = data.stock.date;
+    var data_array = date.toString().split(',');
+    var parsed_array = [];
+    for (var i =0; i < data_array.length; i++){
+        //splitting the data values up by finding - 
+        var split = data_array[i].split('-');
+        //keep substring before T to extract time
+        const day = split[2].substring(0, split[2].indexOf('T'));
+        const month = split[1];
+        const final_date = month + day;
+        //console.log(final_date);
+        //put into parsed array 
+        parsed_array[i] = final_date; 
+    }
+    return parsed_array;
+  }
+  parsed_array = parse_date(data.stock.date);
   var data = [ { label: "Open", 
-                x: [0, 1, 2, 3, 4], 
+                //TODO: correctly implement data.stock.date
+                x: parsed_array, 
                 y: data.stock.open}, 
               { label: "Close", 
-                x: [0, 1, 2, 3, 4], 
+                x: parsed_array, 
                 y: data.stock.close } ] ;
-  console.log(data)
+  //console.log(data)
 var xy_chart = d3_xy_chart()
     .width(1000)
     .height(600)
-    .xlabel("Time")
+    .xlabel("Date")
     .ylabel("Price") ;
 var svg = d3.select("body").append("svg")
     .datum(data)
@@ -84,9 +101,12 @@ function d3_xy_chart() {
 
             var color_scale = d3.scale.category10()
                 .domain(d3.range(datasets.length)) ;
+            var formatxAxis = d3.format('.0f');
             var x_axis = d3.svg.axis()
                 .scale(x_scale)
-                .orient("bottom") ;
+                .orient("bottom") 
+                .tickFormat(formatxAxis)
+                .ticks(5); 
 
             var y_axis = d3.svg.axis()
                 .scale(y_scale)
@@ -96,7 +116,8 @@ function d3_xy_chart() {
                 .scale(x_scale)
                 .orient("bottom")
                 .tickSize(-innerheight)
-                .tickFormat("") ;
+                //.tickFormat(d3.time.format("%Y %m %d")) ;
+                .tickFormat("");
 
             var y_grid = d3.svg.axis()
                 .scale(y_scale)
