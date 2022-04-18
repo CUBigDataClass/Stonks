@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;&family=Playfair+Display;1,400&display=swap");
+
+body {
+  background-color: #212121;
+}
+img {
+  width: 80%;
+  max-width: 450px;
+}
+h1 {
+  font-family: "Popins", sans-serif;
+  color: rgb(254, 254, 254);
+  text-align: center;
+  padding-top: 50px;
+}
+h2 {
+  font-family:"Popins",sans-serif;
+  color: white;
+  text-align: center;
+}
+h3{
+  font-family:"Playfair Display", serif;
+  font-size: 3vw;
+  text-align: center;
+  color:greenyellow;
+}
+#project-journal {
+  width: 100%;
+  max-width: 400px;
+}
+#container {
+  width: 90%; /*The container will try to fill 90% of browser width*/
+  margin: 0px auto; /*This line of code is the key.  0px margin top and bottom, auto margin left and right to center*/
+  padding: 0px;
+  box-sizing: border-box; /*Makes it so that padding does not add to a box's total width*/
+
+  display: flex; /*changes the container into a flex box*/
+  flex-wrap: wrap; /*wrap, nowrap, wrap-reverse*/
+  flex-direction: row; /*row, row-reverse, column, column-reverse*/
+  align-content: flex-start; /*flex-start, flex-end, center, stretch, space-between, space around*/
+  align-items: stretch; /*flex-end, center, stretch, baseline*/
+}
+#container-labs {
+  width: 85%; /*The container will try to fill 85% of width*/
+  margin: 0px auto; /*This line of code is the key.  0px margin top and bottom, auto margin left and right to center*/
+  padding: 0px;
+  box-sizing: border-box; /*Makes it so that padding does not add to a box's total width*/
+
+  display: flex; /*changes the container into a flex box*/
+  flex-wrap: wrap; /*wrap, nowrap, wrap-reverse*/
+  flex-direction: row; /*row, row-reverse, column, column-reverse*/
+  align-content: flex-start; /*flex-start, flex-end, center, stretch, space-between, space around*/
+  align-items: stretch; /*flex-end, center, stretch, baseline*/
+}
+.homepage-paragraphs {
+  font-family: "Poppins", sans-serif;;
+  font-size: 2.5vw;
+  color: white;
+  padding-top: 20px;
+}
+.projects-paragraphs {
+  font-family: "Poppins", sans-serif;;
+  font-size: 1.8vw;
+  color: white;
+  text-align: right;
+  float: right;
+  padding: 1vw;
+}
+.center {
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 100px;
+}
+.center-footer {
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 20px;
+}
+.navbar {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+  background-color: #3DCB44;
+  overflow: hidden;
+  z-index: 9999;
+}
+.navbar a:hover {
+  color:#4EA261;
+  overflow: hidden;
+}
+.text {
+  padding: 0 20px 20px;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: rgb(102, 183, 105);
+}
+a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: #3B5F3D;
+  letter-spacing: 2.5px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #deaa4e;
+  font-weight: 400;
+}
+
+/* allow room for 3 columns */
+ol
+{
+  width:90em;
+  text-align: center;
+  padding-left: 20 px;
+}  /* float & allow room for the widest item */
+ol li
+{
+
+  color: white;
+  float: left;
+  width: 15em;
+  padding-left: 10px ;
+  padding-right: 30px;
+  padding-bottom: 5px;
+  text-align: left;
+}  /* stop the float */
+br
+{
+  clear: left;
+}  
+div.wrapper
+{
+  margin-bottom: 1em;
+}
+@media screen and (max-width: 320px) {
+  /* comes into effect for screens less than or equal to 320 pixels */
+  #somethingorother {
+    width: 120px;
+  }
+}
+@media screen and (min-width: 321px) and (max-width: 480px) {
+  /* comes into effect for screens between 321 and 480 pixels (inclusive) */
+  #somethingorother {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 481px) {
+  /* comes into effect for screens larger than or equal to 481 pixels */
+  #somethingorother {
+    width: 480px;
+  }
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 600px) {
+  div.example {
+    font-size: 30px;
+  }
+}
