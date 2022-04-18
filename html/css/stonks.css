@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;&family=Playfair+Display;1,400&display=swap");
 
 body {
-  background-color: #0c0c0c;
+  background-color: #212121;
 }
 img {
   width: 80%;
@@ -13,7 +13,7 @@ h1 {
   color: rgb(254, 254, 254);
 }
 h2 {
-  font-family:"Playfair Display", serif;
+  font-family:"Popins",sans-serif;
   font-size: 3vw;
   color: white;
   text-align: center;
@@ -188,7 +188,7 @@ a:hover {
   text-align: center;
 }
 .twothirdbox {
-  background-color: #414040;
+  background-color: #363434;
   margin: 2%;
   width: 58.6666666%;
   padding: 2%;

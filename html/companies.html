@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="icon" href="images/cloud-computing.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script defer src="js/companies.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Allison&family=BenchNine:wght@300&family=Gaegu:wght@700&family=Gamja+Flower&family=Tangerine:wght@700&display=swap"
       rel="stylesheet"
@@ -21,37 +23,81 @@
   </head>
 
   <body> 
+    <!-- nav bar -->
+    <div class="w3-top">
+      <div class="navbar">
+        <a href="index.html" class="w3-bar-item w3-button">Home</a>
+        <div class="w3-right w3-hide-small">
+          <a href=".html" class="w3-bar-item w3-button">Watchlist</a>
+          <a href="projects.html" class="w3-bar-item w3-button">What we Do</a>
+          <a href="team.html" class="w3-bar-item w3-button">Team</a>
+          <!-- TO DO: Change this later. Graph is currently linked so I can test on localhost easier -->
+          <a href="graph.html" class="w3-bar-item w3-button"> graph </a>
+        </div>
+      </div>
+    </div>
+    <!-- start boxes  -->
     <div class="col twelve whole">
-	
         <div class="flex-container">
-    
-                <div class="flex-item" id="flex1">
-                    
-                </div>
+          <div class="flex-item" id="flex1">
+          <p>
+            Opening:
+          </p>
+          <p>
+            Closing:
+          </p>
+          <p>
+            Daily High:
+          </p>
+          <p>
+            Daily Low:
+          </p>
+          <br> 
+          <br>
 
+          <button>1D</button> <button>1M</button><button>6M</button>  <button>1Y</button>
+          </div>
 
-            <div class="flex-item" id="flex2">
-                
-            </div>
-            <div class="flex-item" id="flex3">
-                
-            </div>
         </div>
+        
         <div class="flex-container">
-            <div class="flex-item" id="flex4">
-                
+          <div class="flex-item" id="flex4">
+            <div class="flex-container">
+              <div class="flex-item">
+                <p>Historical price chart of Vanguard Dividend Appreciation ETF(<a target="_blank" href="https://sg.finance.yahoo.com/quote/VIG/chart?p=VIG">VIG</a>), built with D3.js. Prices are displayed in United States Dollars(USD). Feel free to check out the source code at <a target="_blank" href="https://github.com/wentjun/d3-historical-price-chart-basic">GitHub</a>.</p>
+              </div>
             </div>
-            <div class="flex-item" id="flex5">
+            <div id="chart"></div>
+            
                 
-            </div>
-            <div class="flex-item" id="flex6"></div>
+          </div>
+          
+
+          <div class="flex-item" id="flex5">
+                
+          </div>
+          
+
+          <div class="flex-item" id="flex6">
+
+          </div>
+          
         </div>
+
         <div class="flex-container">
-            <div class="flex-item" id="flex7"></div>
+            <div class="flex-item" id="flex7">
+
+            </div>
+            
+            
             <div class="flex-item" id="flex8">
 
             </div>
-            <div class="flex-item" id="flex9"></div>
+
+
+            <div class="flex-item" id="flex9">
+
+            </div>
         </div>
     </div>
 </div>
