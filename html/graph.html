@@ -58,8 +58,8 @@ window.onload = function () {
       }
     }
   });
-  //TODO: connect this with the link
-  $.getJSON("sample-data.json", function(data) {
+  //connect this with the link
+  $.getJSON("http://bdastonksapi.com/companyData/GOOG/365/stock/", function(data) {
     //console.log(data.stock)
     for(var i = 0; i < data.stock.date.length; i++){
       //console.log(data.stock[i]);
