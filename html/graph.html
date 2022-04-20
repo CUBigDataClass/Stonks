@@ -4,6 +4,14 @@
 <head>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+<script>
+  //get name from all stonks html input and remove 
+  var r = location.search.substring(1).split("&");
+  //parsing values
+  var parse = r.toString();
+  const key = parse.substring(0, parse.indexOf('='));
+  //console.log(key);
+</script>
 <script type="text/javascript">
 window.onload = function () {
 
@@ -12,10 +20,10 @@ window.onload = function () {
   var stockChart = new CanvasJS.StockChart("stockChartContainer", {
     exportEnabled: true,
     title: {
-      text:"Stock graph"
+      text:key
     },
     subtitles: [{
-      text:"TEXT HERE"
+      text: key
     }],
     charts: [{
       axisX: {
@@ -58,8 +66,14 @@ window.onload = function () {
       }
     }
   });
-  //connect this with the link
-  $.getJSON("http://bdastonksapi.com/companyData/GOOG/365/stock/", function(data) {
+  //connect this with the link with the key url
+  url1 = "http://bdastonksapi.com/companyData/";
+  url2 = key;
+  url3 ="/365/stock/";
+  url = url1+url2+url3; //concatenate the correct url with the key sent in from allStonks and then connect
+  //display the url that is sending.//
+  console.log(url);
+  $.getJSON(url, function(data) {
     //console.log(data.stock)
     for(var i = 0; i < data.stock.date.length; i++){
       //console.log(data.stock[i]);
