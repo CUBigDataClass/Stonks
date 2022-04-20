@@ -113,10 +113,48 @@ window.onload = function () {
         stockChart.render();
       });
   });
+    // pie chart
+    var dataPoints = [];
+    var chart = new CanvasJS.Chart("chartContainer2", {
+    animationEnabled: true,
+    title: {
+      text: "Tweets positive vs negative"
+    },
+    data: [{
+      type: "pie",
+      startAngle: 240,
+      yValueFormatString: "##0.00\"%\"",
+      indexLabel: "{label} {y}",
+      dataPoints: dataPoints
+    }]
+  });
+  //http://bdastonksapi.com/companyData/TSLA/365/tweets/
+  a = "http://bdastonksapi.com/companyData/";
+  b = key;
+  c = "/365/tweets/";
+  url = a+b+c;
+  $.getJSON(url, function(d){
+    dataPoints.push(
+      {
+        label: "positive",
+        y: d.tweets.positive,
+      },
+      {
+        label: "negative",
+        y: d.tweets.negative,
+      },
+      {
+        label: "neutral",
+        y: d.tweets.neutral,
+      }
+      )
+    chart.render();
+  });
 }
 </script>
 </head>
 <body>
 <div id="stockChartContainer" style="height: 400px; width: 100%;"></div>
+<div id="chartContainer2"></div>
 </body>
 </html>
