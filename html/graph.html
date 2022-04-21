@@ -1,160 +1,201 @@
 <!-- SRC + base template credit to canvasJS: https://canvasjs.com/javascript-stockcharts/line-stockchart-json/ -->
-<!DOCTYPE HTML>
-<html>
-<head>
-<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
-<script>
-  //get name from all stonks html input and remove 
-  var r = location.search.substring(1).split("&");
-  //parsing values
-  var parse = r.toString();
-  const key = parse.substring(0, parse.indexOf('='));
-  //console.log(key);
-</script>
-<script type="text/javascript">
-window.onload = function () {
-  var dataPoints1 = [];
-  var dataPoints2 = [];
-  var news =[];
-  var stockChart = new CanvasJS.StockChart("stockChartContainer", {
-    exportEnabled: true,
-    title: {
-      text:key
-    },
-    subtitles: [{
-      text: key
-    }],
-    charts: [{
-      axisX: {
-        crosshair: {
-          enabled: true,
-          snapToDataPoint: true,
-          valueFormatString: "MMM YYYY"
-        }
-      },
-      axisY: {
-        title: "Dollars",
-        prefix: "$",
-        suffix: "M",
-        crosshair: {
-          enabled: true,
-          snapToDataPoint: true,
-          //change this to news api 
-          valueFormatString: "$#,###.00M",
-        }
-      },
-      data: [
-        {
-          //TODO: add onclick func
-          type:"stackedColumn",
-          toolTipContent: "Top news: {label}",
-          name: "News",
-          dataPoints : news
-        },
-        {
-            type: "line",
-            //toolTipContent: "Top news: , {news1}",
-            //TODO: import news into label 
-            name: "Open",
-            dataPoints : dataPoints1
-        },
-        {
-            type: "line",
-            //toolTipContent: "Top news: , {news1}",
-            //TODO: import news into label 
-            name: "Close",
-            dataPoints : dataPoints2
-        }]
-    }],
-    navigator: {
-      slider: {
-        minimum: new Date(2021, 00, 01),
-        maximum: new Date(2022, 00, 07)
-      }
-    }
-  });
-  //connect this with the link with the key url
-  url1 = "http://bdastonksapi.com/companyData/";
-  url2 = key;
-  url3 ="/365/stock/";
-  url = url1+url2+url3; //concatenate the correct url with the key sent in from allStonks and then connect
-  //display the url that is sending.
-  console.log(url);
-  //outer loop connect to stock prices
-  $.getJSON(url, function(data) {
-    //console.log(data.stock)
-      n1 = "http://bdastonksapi.com/companyData/";
-      n2 = key;
-      n3 = "/365/news/";
-      n = n1+n2+n3;
-      //connect with news api (second connect to fetch news to display)
-      $.getJSON(n, function(d){ 
-        for(var i = 0; i < data.stock.date.length; i++){
-          //console.log(data.stock[i]);
-          x= new Date(data.stock.date[i])
-          
-          dataPoints1.push({x: new Date(data.stock.date[i]), y: Number(data.stock.open[i])})
-          dataPoints2.push({x: new Date(data.stock.date[i]), y: Number(data.stock.close[i])})
-          if (i < 5){
-            for(var j = 0; j < d.news.length; j++){
-            x2= new Date(d.news[j].date_published)
-            //console.log(d.news[i].date_published)
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>Big Data:Graph</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/stonks.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
+    <script
+      type="text/javascript"
+      src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"
+    ></script>
+    <script defer src="graph.js"></script>
+  </head>
+
+  <body style="background-color: #0c0c0c">
+    <!-- nav bar -->
+    <div class="w3-top">
+      <div class="navbar">
+        <a href="index.html" class="w3-bar-item w3-button">Home</a>
+        <div class="w3-right w3-hide-small">
+          <a href="about.html" class="w3-bar-item w3-button">What we Do</a>
+          <a href="team.html" class="w3-bar-item w3-button">Team</a>
+          <a href="allStonks.html" class="w3-bar-item w3-button">
+            All Stocks
+          </a>
+        </div>
+      </div>
+    </div>
+    <div id="stockChartContainer" style="height: 400px; width: 100%"></div>
+    <div id="chartContainer2"></div>
+
+    <script type="text/javascript">
+      window.onload = function () {
+        var dataPoints1 = [];
+        var dataPoints2 = [];
+        var news = [];
+        var stockChart = new CanvasJS.StockChart("stockChartContainer", {
+          exportEnabled: true,
+          title: {
+            text: key,
+          },
+          subtitles: [
+            {
+              text: key,
+            },
+          ],
+          charts: [
+            {
+              axisX: {
+                crosshair: {
+                  enabled: true,
+                  snapToDataPoint: true,
+                  valueFormatString: "MMM YYYY",
+                },
+              },
+              axisY: {
+                title: "Dollars",
+                prefix: "$",
+                suffix: "M",
+                crosshair: {
+                  enabled: true,
+                  snapToDataPoint: true,
+                  //change this to news api
+                  valueFormatString: "$#,###.00M",
+                },
+              },
+              data: [
+                {
+                  //TODO: add onclick func
+                  fontColor: "#FF0000",
+                  type: "stackedColumn",
+                  toolTipContent: "Top news: {label}",
+                  name: "News",
+                  dataPoints: news,
+                },
+                {
+                  type: "line",
+                  //toolTipContent: "Top news: , {news1}",
+                  //TODO: import news into label
+                  name: "Open",
+                  dataPoints: dataPoints1,
+                },
+                {
+                  type: "line",
+                  //toolTipContent: "Top news: , {news1}",
+                  //TODO: import news into label
+                  name: "Close",
+                  dataPoints: dataPoints2,
+                },
+              ],
+            },
+          ],
+          navigator: {
+            slider: {
+              minimum: new Date(2021, 00, 01),
+              maximum: new Date(2022, 00, 07),
+            },
+          },
+        });
+        //connect this with the link with the key url
+        url1 = "http://bdastonksapi.com/companyData/";
+        url2 = key;
+        url3 = "/365/stock/";
+        url = url1 + url2 + url3; //concatenate the correct url with the key sent in from allStonks and then connect
+        //display the url that is sending.
+        console.log(url);
+        //outer loop connect to stock prices
+        $.getJSON(url, function (data) {
+          //console.log(data.stock)
+          n1 = "http://bdastonksapi.com/companyData/";
+          n2 = key;
+          n3 = "/365/news/";
+          n = n1 + n2 + n3;
+          //connect with news api (second connect to fetch news to display)
+          $.getJSON(n, function (d) {
+            for (var i = 0; i < data.stock.date.length; i++) {
+              //console.log(data.stock[i]);
+              x = new Date(data.stock.date[i]);
+
+              dataPoints1.push({
+                x: new Date(data.stock.date[i]),
+                y: Number(data.stock.open[i]),
+              });
+              dataPoints2.push({
+                x: new Date(data.stock.date[i]),
+                y: Number(data.stock.close[i]),
+              });
+              if (i < 5) {
+                for (var j = 0; j < d.news.length; j++) {
+                  x2 = new Date(d.news[j].date_published);
+                  //console.log(d.news[i].date_published)
+                }
+                //console.log(x2)
+              }
+              //find news within time frame
+              if ((x < x2) & (i < 5)) {
+                console.log(d.news[i].title);
+                //news1 = d.news[i].title;
+                news.push({
+                  x: new Date(d.news[i].date_published),
+                  y: Number(data.stock.open[i]),
+                  label: d.news[i].title,
+                });
+              }
             }
-          //console.log(x2)
-          }
-          //find news within time frame 
-          if (x < x2 & i <5){
-            console.log(d.news[i].title)
-            //news1 = d.news[i].title;
-            news.push({x: new Date(d.news[i].date_published), y: Number(data.stock.open[i]), label: d.news[i].title})
-          }
-        }
-        stockChart.render();
-      });
-  });
-    // pie chart
-    var dataPoints = [];
-    var chart = new CanvasJS.Chart("chartContainer2", {
-    animationEnabled: true,
-    title: {
-      text: "Tweets positive vs negative"
-    },
-    data: [{
-      type: "pie",
-      startAngle: 240,
-      yValueFormatString: "##0.00\"%\"",
-      indexLabel: "{label} {y}",
-      dataPoints: dataPoints
-    }]
-  });
-  //http://bdastonksapi.com/companyData/TSLA/365/tweets/
-  a = "http://bdastonksapi.com/companyData/";
-  b = key;
-  c = "/365/tweets/";
-  url = a+b+c;
-  $.getJSON(url, function(d){
-    dataPoints.push(
-      {
-        label: "positive",
-        y: d.tweets.positive,
-      },
-      {
-        label: "negative",
-        y: d.tweets.negative,
-      },
-      {
-        label: "neutral",
-        y: d.tweets.neutral,
-      }
-      )
-    chart.render();
-  });
-}
-</script>
-</head>
-<body>
-<div id="stockChartContainer" style="height: 400px; width: 100%;"></div>
-<div id="chartContainer2"></div>
-</body>
+            stockChart.render();
+          });
+        });
+        // pie chart
+        var dataPoints = [];
+        var chart = new CanvasJS.Chart("chartContainer2", {
+          animationEnabled: true,
+          title: {
+            text: "Twitter Sentiment Analysis: positive vs negative tweets",
+          },
+          data: [
+            {
+              type: "pie",
+              startAngle: 240,
+              yValueFormatString: '##0.00"%"',
+              indexLabel: "{label} {y}",
+              dataPoints: dataPoints,
+            },
+          ],
+        });
+        //http://bdastonksapi.com/companyData/TSLA/365/tweets/
+        a = "http://bdastonksapi.com/companyData/";
+        b = key;
+        c = "/365/tweets/";
+        url = a + b + c;
+        $.getJSON(url, function (d) {
+          dataPoints.push(
+            {
+              fontColor: "#FF0000",
+              label: "Positive Tweets",
+              y: d.tweets.positive * 100,
+            },
+            {
+              label: "Negative Tweets",
+              y: d.tweets.negative * 100,
+            },
+            {
+              label: "Neutral Tweets",
+              y: d.tweets.neutral * 100,
+            }
+          );
+          chart.render();
+        });
+      };
+    </script>
+  </body>
 </html>
