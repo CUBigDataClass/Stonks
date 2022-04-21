@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;&family=Playfair+Display;1,400&display=swap");
+
+body {
+  background-color: #0c0c0c;
+}
+
+/* styling for the team page imgs */
+img {
+    
+    width: 80%;
+    max-width: 250px;
+}
+
+#team{ 
+  padding-top: 50pt;
+  width: 80%;
+  max-width: 250px;
+
+}
+
+.page-wrap {
+    padding-top: 5%;
+    width: 90%;
+    margin: 0.2em auto;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  #displayTitle {
+    flex-basis: 100%;
+    position: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 5em;
+  }
+  
+  .displayItem {
+    padding: 2%;
+    width: 200px;
+    height: 200px;
+    margin-top: 10px;
+    line-height: 150px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .page-wrap .displayItem img {
+    width: 100%;
+    height: auto;
+  }
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 6vw;
+  color: rgb(254, 254, 254);
+}
+h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 3vw;
+  color: white;
+  text-align: center;
+  padding-top: 5%;
+}
+h3{
+  font-family: "Poppins", sans-serif;
+  font-size: 3vw;
+  text-align: center;
+  color:greenyellow;
+}
+
+.right {
+  float: right;
+}
+
+.center {
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 100px;
+}
+.center-footer {
+  text-align: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 20px;
+}
+.navbar {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+  background-color: #3DCB44;
+  overflow: hidden;
+  z-index: 9999;
+}
+.navbar a:hover {
+  color:#4EA261;
+  overflow: hidden;
+}
+.text {
+  padding: 0 20px 20px;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: #3B5F3D;
+  letter-spacing: 2.5px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #deaa4e;
+  font-weight: 400;
+}
+
+
+br
+{
+  clear: left;
+}  separate the list from subsequent markup
+div.wrapper
+{
+  margin-bottom: 1em;
+}
+@media screen and (max-width: 320px) {
+  /* comes into effect for screens less than or equal to 320 pixels */
+  #somethingorother {
+    width: 120px;
+  }
+}
+@media screen and (min-width: 321px) and (max-width: 480px) {
+  /* comes into effect for screens between 321 and 480 pixels (inclusive) */
+  #somethingorother {
+    width: 320px;
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@media screen and (min-width: 601px) {
+  div.example {
+    font-size: 80px;
+  }
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 600px) {
+  div.example {
+    font-size: 30px;
+  }
+}

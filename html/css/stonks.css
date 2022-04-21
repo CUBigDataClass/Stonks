@@ -1,25 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200&family=Sintony:wght@400;700&family=Vollkorn:ital,wght@0,700;&family=Playfair+Display;1,400&display=swap");
 
 body {
-  background-color: #212121;
+  background-color: #0c0c0c;
 }
 img {
+  width: 85%;
+  max-width: 1000px;
+}
+/* styling for the team page imgs */
+#team{ 
+  padding-top: 50pt;
   width: 80%;
-  max-width: 450px;
+  max-width: 250px;
+
 }
 h1 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", sans-serif;
   font-size: 6vw;
   color: rgb(254, 254, 254);
 }
 h2 {
-  font-family:"Popins",sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 3vw;
   color: white;
   text-align: center;
 }
 h3{
-  font-family:"Playfair Display", serif;
+  font-family: "Poppins", sans-serif;
   font-size: 3vw;
   text-align: center;
   color:greenyellow;
@@ -108,13 +115,13 @@ h3{
   text-align: left;
 }
 .homepage-paragraphs {
-  font-family: "Poppins", sans-serif;;
+  font-family: "Playfair Display", serif;
   font-size: 2.5vw;
   color: white;
   padding-top: 20px;
 }
 .projects-paragraphs {
-  font-family: "Poppins", sans-serif;;
+  font-family: "Playfair Display", serif;
   font-size: 1.8vw;
   color: white;
   text-align: right;
@@ -172,7 +179,8 @@ a:hover {
   font-weight: 400;
 }
 .thirdbox {
-  background-color: #414040;
+  /*IDEA: put some contrast in the boxes? */
+  background-color: #2c8230;
   margin: 2%;
   width: 29.33333333%;
   padding: 2%;
@@ -188,7 +196,7 @@ a:hover {
   text-align: center;
 }
 .twothirdbox {
-  background-color: #363434;
+  background-color: #1f1e1e;
   margin: 2%;
   width: 58.6666666%;
   padding: 2%;
