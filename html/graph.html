@@ -5,6 +5,10 @@
   <head>
     <title>Big Data:Graph</title>
     <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="css/stonks.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
@@ -107,7 +111,7 @@
           },
         });
         //connect this with the link with the key url
-        url1 = "http://bdastonksapi.com/companyData/";
+        url1 = "https://bdastonksapi.com/companyData/";
         url2 = key;
         url3 = "/365/stock/";
         url = url1 + url2 + url3; //concatenate the correct url with the key sent in from allStonks and then connect
@@ -116,7 +120,7 @@
         //outer loop connect to stock prices
         $.getJSON(url, function (data) {
           //console.log(data.stock)
-          n1 = "http://bdastonksapi.com/companyData/";
+          n1 = "https://bdastonksapi.com/companyData/";
           n2 = key;
           n3 = "/365/news/";
           n = n1 + n2 + n3;
@@ -173,7 +177,7 @@
           ],
         });
         //http://bdastonksapi.com/companyData/TSLA/365/tweets/
-        a = "http://bdastonksapi.com/companyData/";
+        a = "https://bdastonksapi.com/companyData/";
         b = key;
         c = "/365/tweets/";
         url = a + b + c;
@@ -196,6 +200,8 @@
           chart.render();
         });
       };
+
+      //News API
     </script>
   </body>
 </html>
