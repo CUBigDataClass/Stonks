@@ -105,8 +105,8 @@
           ],
           navigator: {
             slider: {
-              minimum: new Date(2021, 00, 01),
-              maximum: new Date(2022, 00, 07),
+              minimum: new Date(2021, 04, 01),
+              maximum: new Date(2022, 04, 21),
             },
           },
         });
@@ -116,7 +116,7 @@
         url3 = "/365/stock/";
         url = url1 + url2 + url3; //concatenate the correct url with the key sent in from allStonks and then connect
         //display the url that is sending.
-        console.log(url);
+        //console.log(url);
         //outer loop connect to stock prices
         $.getJSON(url, function (data) {
           //console.log(data.stock)
@@ -126,7 +126,11 @@
           n = n1 + n2 + n3;
           //connect with news api (second connect to fetch news to display)
           $.getJSON(n, function (d) {
+            //console.log(data.stock.date.length
+            //console.log("data")
+            //console.log(data)
             for (var i = 0; i < data.stock.date.length; i++) {
+              //console.log(i)
               //console.log(data.stock[i]);
               x = new Date(data.stock.date[i]);
 
@@ -138,24 +142,10 @@
                 x: new Date(data.stock.date[i]),
                 y: Number(data.stock.close[i]),
               });
-              if (i < 5) {
-                for (var j = 0; j < d.news.length; j++) {
-                  x2 = new Date(d.news[j].date_published);
-                  //console.log(d.news[i].date_published)
-                }
-                //console.log(x2)
-              }
-              //find news within time frame
-              if ((x < x2) & (i < 5)) {
-                console.log(d.news[i].title);
-                //news1 = d.news[i].title;
-                news.push({
-                  x: new Date(d.news[i].date_published),
-                  y: Number(data.stock.open[i]),
-                  label: d.news[i].title,
-                });
-              }
             }
+            //console.log("news date")
+            //console.log(d)
+            //console.log(d.news.length)
             stockChart.render();
           });
         });
@@ -181,6 +171,7 @@
         b = key;
         c = "/365/tweets/";
         url = a + b + c;
+        console.log("work");
         $.getJSON(url, function (d) {
           dataPoints.push(
             {
@@ -197,6 +188,14 @@
               y: d.tweets.neutral * 100,
             }
           );
+          chart.render();
+        }).error(function () {
+          console.log("oh no it failed");
+          dataPoints.push({
+            fontColor: "#FF0000",
+            label: "There were no tweets for this company :/",
+            y: 1 * 100,
+          });
           chart.render();
         });
       };
